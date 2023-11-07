@@ -1,3 +1,4 @@
+# tagでバージョン指定しないと変なの掴む
 FROM espressif/idf:release-v5.1
 
 ARG DEBIAN_FRONTEND=nointeractive
@@ -43,6 +44,7 @@ WORKDIR /home/${CONTAINER_USER}
 
 RUN echo "source /opt/esp/idf/export.sh > /dev/null 2>&1" >> ~/.bashrc
 
+# チュートリアルにはないけど、怒られるので追加
 RUN git config --global --add safe.directory *
 
 ENTRYPOINT [ "/opt/esp/entrypoint.sh" ]
