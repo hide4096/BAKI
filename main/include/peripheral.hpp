@@ -7,11 +7,11 @@
 #include "sdkconfig.h"
 #include "PCA9632.hpp"
 
-constexpr gpio_num_t    LED_SDA = GPIO_NUM_0;
-constexpr gpio_num_t    LED_SCL = GPIO_NUM_1;
-constexpr uint32_t      LED_FREQ = 1000000;
+constexpr gpio_num_t    LED_SDA = GPIO_NUM_37;
+constexpr gpio_num_t    LED_SCL = GPIO_NUM_38;
+constexpr int           LED_FREQ = 100000;
 constexpr uint8_t       LED_ADRS = 0x40;
-constexpr i2c_port_t    LED_PORT = I2C_NUM_0;
+constexpr i2c_port_t    LED_PORT = I2C_NUM_1;
 
 extern PCA9632 led;
 
