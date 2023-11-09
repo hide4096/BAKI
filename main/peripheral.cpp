@@ -1,7 +1,8 @@
 #include "peripheral.hpp"
 #include <cstring>
 
-PCA9632 led(LED_PORT,LED_ADRS);
+PCA9632 led(I2C_NUM_0,LED_ADRS);
+MPU6500 gyro;
 
 void initSensors() {
     esp_err_t ret;
@@ -29,10 +30,11 @@ void initSensors() {
     spi_bus_config_t bus_imu;
     bus_imu.mosi_io_num = IMU_MOSI;
     bus_imu.miso_io_num = IMU_MISO;
-    bus_imu.sclk_io_num = IMU_CS;
+    bus_imu.sclk_io_num = IMU_CLK;
     bus_imu.quadwp_io_num = -1;
     bus_imu.quadhd_io_num = -1;
     bus_imu.max_transfer_sz = 16;
+    bus_imu.intr_flags = 0;
 
     ret = spi_bus_initialize(SPI2_HOST,&bus_imu,SPI_DMA_CH_AUTO);
     ESP_ERROR_CHECK(ret);

@@ -7,6 +7,7 @@
 #include "soc/gpio_struct.h"
 #include "sdkconfig.h"
 #include "PCA9632.hpp"
+#include "MPU6500.hpp"
 
 constexpr gpio_num_t    LED_SDA = GPIO_NUM_45;
 constexpr gpio_num_t    LED_SCL = GPIO_NUM_46;
@@ -20,6 +21,7 @@ constexpr gpio_num_t    IMU_CLK     = GPIO_NUM_2;
 constexpr gpio_num_t    IMU_CS      = GPIO_NUM_7;
 
 extern PCA9632 led;
+extern MPU6500 gyro;
 
 void initSensors();
 

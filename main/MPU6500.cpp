@@ -50,7 +50,7 @@ void MPU6500::init(spi_host_device_t bus,gpio_num_t cs){
     err = spi_bus_add_device(bus,&dev_imu,&_spi);
     ESP_ERROR_CHECK(err);
 
-    if(read(0x75) != MPU6500_WHO_AM_I){
+    if(read(0x00) != MPU6500_WHO_AM_I){ //MPU6500 : read(0x75)  ICM20648 : read(0x00)
         return;
     }
 

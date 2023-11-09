@@ -8,6 +8,8 @@
 
 #define MPU6500_WHO_AM_I 0x70
 #define MPU6500_READ_FLAG 0x80
+#define ICM20648_WHO_AM_I 0xE0
+
 
 class MPU6500{
     public:
