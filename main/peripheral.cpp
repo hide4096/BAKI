@@ -1,7 +1,7 @@
 #include "peripheral.hpp"
 #include <cstring>
 
-PCA9632 led(LED_PORT,LED_ADRS);
+PCA9632 led;
 
 void initSensors() {
     esp_err_t ret;
@@ -17,9 +17,10 @@ void initSensors() {
     i2c_conf.master.clk_speed = LED_FREQ;
     i2c_conf.clk_flags = 0;
 
-    ret = i2c_param_config(LED_PORT,&i2c_conf);
+    ret = i2c_param_config(I2C_NUM_0,&i2c_conf);
     ESP_ERROR_CHECK(ret);
-    ret = i2c_driver_install(LED_PORT,I2C_MODE_MASTER,0,0,0);
+    ret = i2c_driver_install(I2C_NUM_0,I2C_MODE_MASTER,0,0,0);
     ESP_ERROR_CHECK(ret);
-    led.init();
+
+    led.init(I2C_NUM_0,LED_ADRS);
 }

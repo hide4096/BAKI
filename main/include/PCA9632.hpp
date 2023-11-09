@@ -9,9 +9,9 @@
 
 class PCA9632{
     public:
-        PCA9632(i2c_port_t port, uint8_t adrs);
+        PCA9632();
         ~PCA9632();
-        void init();
+        void init(i2c_port_t port, uint8_t adrs);
         void blink();
     private:
         bool _init = false;
