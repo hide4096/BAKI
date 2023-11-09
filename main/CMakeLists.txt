@@ -7,5 +7,6 @@ set(COMPONENT_SRCS
     "main.cpp"
     "peripheral.cpp"
     "PCA9632.cpp"
+    "MPU6500.cpp"
     )
 register_component()
