@@ -12,8 +12,8 @@ void initSensors() {
     i2c_conf.mode = I2C_MODE_MASTER;
     i2c_conf.sda_io_num = LED_SDA;
     i2c_conf.scl_io_num = LED_SCL;
-    i2c_conf.sda_pullup_en = GPIO_PULLUP_DISABLE;
-    i2c_conf.scl_pullup_en = GPIO_PULLUP_DISABLE;
+    i2c_conf.sda_pullup_en = GPIO_PULLUP_ENABLE;
+    i2c_conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
     i2c_conf.master.clk_speed = LED_FREQ;
     i2c_conf.clk_flags = 0;
 

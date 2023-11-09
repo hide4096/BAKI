@@ -17,7 +17,10 @@ uint8_t PCA9632::read(uint8_t reg){
 
 esp_err_t PCA9632::write(uint8_t reg,uint8_t data){
     uint8_t send[2] = {reg,data};
-    return i2c_master_write_to_device(_port,_adrs,send,2,10/portTICK_PERIOD_MS);
+
+    esp_err_t err = i2c_master_write_to_device(_port,_adrs,send,2,10/portTICK_PERIOD_MS);
+    ESP_ERROR_CHECK(err);
+    return err;
 }
 
 void PCA9632::init(){
@@ -28,8 +31,12 @@ void PCA9632::init(){
 void PCA9632::blink(){
     while(1){
         write(0x14,0x55);
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        vTaskDelay(100 / portTICK_PERIOD_MS);
         write(0x14,0x00);
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }
+/*void PCA9632::LED(uint8_t LED_num, uint8_t brightness){
+    write()
+
+}*/
