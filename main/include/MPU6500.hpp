@@ -1,6 +1,8 @@
 #ifndef MPU6500_HPP
 #define MPU6500_HPP
 
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 #include "sdkconfig.h"
 #include "driver/gpio.h"
 #include "driver/spi_master.h"

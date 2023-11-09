@@ -42,6 +42,7 @@ void MPU6500::init(spi_host_device_t bus,gpio_num_t cs){
     esp_err_t err;
 
     spi_device_interface_config_t dev_imu;
+    memset(&dev_imu,0,sizeof(dev_imu));
     dev_imu.clock_speed_hz = 7*1000*1000;
     dev_imu.mode = 3;
     dev_imu.spics_io_num = cs;
@@ -50,9 +51,13 @@ void MPU6500::init(spi_host_device_t bus,gpio_num_t cs){
     err = spi_bus_add_device(bus,&dev_imu,&_spi);
     ESP_ERROR_CHECK(err);
 
-    if(read(0x00) != MPU6500_WHO_AM_I){ //MPU6500 : read(0x75)  ICM20648 : read(0x00)
+    uint8_t whoami = read(0x00);
+    if(whoami != ICM20648_WHO_AM_I){ //MPU6500 : read(0x75)  ICM20648 : read(0x00)
+        printf("%d\r\n",whoami);
+        printf("failed\r\n");
         return;
     }
 
     _init = true;
+    printf("success");
 }

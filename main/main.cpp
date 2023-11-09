@@ -12,7 +12,4 @@ extern "C" void app_main(void){
     };*/
     gyro.init(SPI2_HOST,IMU_CS);
     //gyro.read(0x00);
-    
-    
-    
 }

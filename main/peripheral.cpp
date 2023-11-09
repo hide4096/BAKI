@@ -10,7 +10,7 @@ void initSensors() {
     //I2C
     //LEDドライバ
     i2c_config_t i2c_conf;
-    
+    memset(&i2c_conf,0,sizeof(i2c_conf));
     i2c_conf.mode = I2C_MODE_MASTER;
     i2c_conf.sda_io_num = LED_SDA;
     i2c_conf.scl_io_num = LED_SCL;
@@ -28,6 +28,7 @@ void initSensors() {
     //SPI
     //MPU6500
     spi_bus_config_t bus_imu;
+    memset(&bus_imu,0,sizeof(bus_imu));
     bus_imu.mosi_io_num = IMU_MOSI;
     bus_imu.miso_io_num = IMU_MISO;
     bus_imu.sclk_io_num = IMU_CLK;
