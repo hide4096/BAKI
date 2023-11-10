@@ -71,6 +71,12 @@ void MPU6500::init(spi_host_device_t bus,gpio_num_t cs){
 
     _init = true;
     printf("success");
+
+    write(0x06,0b10000000);
+    vTaskDelay(10/portTICK_PERIOD_MS);
+    write(0x06,0b00001001);
+    changesens(3,1);
+
 }
 
 int MPU6500::changesens(uint8_t _gyro,uint8_t _accel){
@@ -145,7 +151,7 @@ int16_t MPU6500::accelZ_raw(){
     return read16(0x31,0x32);
 }
 int16_t MPU6500::gyroX_raw(){
-    return read16(0x33,0x32);
+    return read16(0x33,0x34);
 }
 int16_t MPU6500::gyroY_raw(){
     return read16(0x35,0x36);
