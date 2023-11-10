@@ -3,6 +3,9 @@
 MPU6500::MPU6500(){}
 MPU6500::~MPU6500(){}
 
+float gyro_sensitivity = 1.;
+float accel_sensitivity = 1.;
+
 uint8_t MPU6500::read(uint8_t reg){
     esp_err_t err;
     spi_transaction_t cmd;
@@ -21,6 +24,14 @@ uint8_t MPU6500::read(uint8_t reg){
 
     return rx;
 }
+
+uint16_t MPU6500::read16(uint8_t Hreg,uint8_t Lreg){
+    uint8_t Hrecv,Lrecv;
+    Hrecv = read(Hreg);
+    Lrecv = read(Lreg);
+    return Hrecv << 8 | Lrecv;
+}
+
 
 void MPU6500::write(uint8_t reg,uint8_t data){
     esp_err_t err;
@@ -61,3 +72,104 @@ void MPU6500::init(spi_host_device_t bus,gpio_num_t cs){
     _init = true;
     printf("success");
 }
+
+int MPU6500::changesens(uint8_t _gyro,uint8_t _accel){
+    if(_gyro > 0b11 || _accel > 0b11) return -1;
+     
+     uint8_t gyro_congig = _gyro << 1, accel_config = _accel << 1;
+
+     write(0x7F,0x20);
+
+     write(0x01,gyro_congig);
+     write(0x14,accel_config);
+
+     if((read(0x01) & 0b0110) != gyro_congig) return -1;
+     if((read(0x01) & 0b0110) != accel_config) return -1;
+
+     write(0x7F,0x00);
+    
+    switch (_gyro)
+    {
+    case 0:
+        gyro_sensitivity = 250.0 /32767.;
+        break;
+    case 1:
+        gyro_sensitivity = 500.0 /32767.;
+        break;
+    case 2:
+        gyro_sensitivity = 1000.0/32767.;
+        break;
+    case 3:
+        gyro_sensitivity = 500.0 /32767.;
+        break;
+    default:
+        break;
+    }
+    switch (_accel)
+    {
+    case 0:
+        accel_sensitivity = 2.0 / 32767.;
+        break;
+    case 1:
+        accel_sensitivity = 2.0 / 32767.;
+        break;
+    case 2:
+        accel_sensitivity = 2.0 / 32767.;
+        break;
+    case 3:
+        accel_sensitivity = 2.0 / 32767.;
+        break;
+    
+    default:
+        break;
+    }
+    return 0;
+}
+
+float MPU6500::surveybias(int reftime){
+    float r_yaw_ref_tmp = 0;
+    for(uint16_t i = 0; i < reftime; i++){
+        r_yaw_ref_tmp += gyroZ();
+        vTaskDelay(1/portTICK_PERIOD_MS);
+    }
+    return (float)(r_yaw_ref_tmp / reftime);
+}
+
+int16_t MPU6500::accelX_raw(){
+    return read16(0x2D,0x2E);
+}
+int16_t MPU6500::accelY_raw(){
+    return read16(0x2F,0x30);
+}
+int16_t MPU6500::accelZ_raw(){
+    return read16(0x31,0x32);
+}
+int16_t MPU6500::gyroX_raw(){
+    return read16(0x33,0x32);
+}
+int16_t MPU6500::gyroY_raw(){
+    return read16(0x35,0x36);
+}
+int16_t MPU6500::gyroZ_raw(){
+    return read16(0x37,0x38);
+}
+float MPU6500::accelX(){
+    return (float)accelX_raw() * accel_sensitivity;
+}
+float MPU6500::accelY(){
+    return (float)accelY_raw() * accel_sensitivity;
+}
+float MPU6500::accelZ(){
+    return (float)accelZ_raw() * accel_sensitivity;
+}
+float MPU6500::gyroX(){
+    return (float)gyroX_raw() * gyro_sensitivity;
+}
+float MPU6500::gyroY(){
+    return (float)gyroX_raw() * gyro_sensitivity;
+}
+float MPU6500::gyroZ(){
+    return (float)gyroX_raw() * gyro_sensitivity;
+}
+
+
