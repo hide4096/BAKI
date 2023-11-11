@@ -14,16 +14,10 @@ extern "C" void app_main(void){
         
         vTaskDelay(1);
     };*/
-    gyro.init(SPI2_HOST,IMU_CS);
-    while (1)
-    {
-        std::cout << std::left << gyro.accelX() << ",";
-        std::cout << std::left << gyro.accelY() << ",";
-        std::cout << std::left << gyro.accelZ() << ",";
-        std::cout << std::left << gyro.gyroX() << ",";
-        std::cout << std::left << gyro.gyroY() << ",";
-        std::cout << std::left << gyro.gyroZ() << "," << std::endl;
-        vTaskDelay(1/portTICK_PERIOD_MS);
+    while (1){
+        printf("%1.2f\t%1.2f\t%1.2f\r",
+            gyro.accelX(),gyro.accelY(),gyro.accelZ());
+        vTaskDelay(10/portTICK_PERIOD_MS);
     }
     
 }

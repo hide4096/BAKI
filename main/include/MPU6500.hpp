@@ -17,15 +17,17 @@ class MPU6500{
     public:
         MPU6500();
         ~MPU6500();
+
         void init(spi_host_device_t bus,gpio_num_t cs);
-        int changesens(uint8_t _gyro,uint8_t _accel);
         float surveybias(int reftime);
+
         int16_t accelX_raw();
         int16_t accelY_raw();
         int16_t accelZ_raw();
         int16_t gyroX_raw();
         int16_t gyroY_raw();
         int16_t gyroZ_raw();
+
         float accelX();
         float accelY();
         float accelZ();
@@ -34,9 +36,12 @@ class MPU6500{
         float gyroZ();
     private:
         spi_device_handle_t _spi;
-        bool _init = false;
+        float gyro_sensitivity=1,accel_sensitivity=1;
+
+        uint8_t whoami();
+        int changesens(uint8_t _gyro,uint8_t _accel);
         uint8_t read(uint8_t reg);
-        uint16_t read16(uint8_t Hreg,uint8_t Lreg);
+        uint16_t read16(uint8_t reg);
         void write(uint8_t reg, uint8_t data);
 
 };
