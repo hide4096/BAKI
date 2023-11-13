@@ -10,7 +10,10 @@
 
 #define MPU6500_WHO_AM_I 0x70
 #define MPU6500_READ_FLAG 0x80
-#define ICM20648_WHO_AM_I 0xE0
+#define GYRO_CONFIG 0x1B
+#define ACCEL_CONFIG 0x1C
+#define GYRO_FS_SEL 3
+#define ACCEL_FS_SEL 3
 
 
 class MPU6500{

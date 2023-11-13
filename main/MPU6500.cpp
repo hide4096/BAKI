@@ -70,12 +70,11 @@ void MPU6500::init(spi_host_device_t bus,gpio_num_t cs){
     err = spi_bus_add_device(bus,&dev_imu,&_spi);
     ESP_ERROR_CHECK(err);
 
-    write(0x7F,0x00);
-    write(0x06,0b10000000);
-    write(0x06,0b00001001);
+    write(0x6B,0b10000000);
+    write(0x6B,0b00001001); //温度センサ無効
 
     uint8_t who = whoami();
-    if(who != ICM20648_WHO_AM_I){ //MPU6500 : read(0x75)  ICM20648 : read(0x00)
+    if(who != MPU6500_WHO_AM_I){ //MPU6500 : read(0x75)  ICM20648 : read(0x00)
         printf("%d\r\n",who);
         printf("failed\r\n");
         while (1) vTaskDelay(1);
@@ -89,17 +88,13 @@ void MPU6500::init(spi_host_device_t bus,gpio_num_t cs){
 
 int MPU6500::changesens(uint8_t _gyro,uint8_t _accel){
     if(_gyro > 0b11 || _accel > 0b11) return -1;
-     
-     uint8_t gyro_config = _gyro << 1, accel_config = _accel << 1;
 
-     write(0x7F,0x20);
-     write(0x01,gyro_config);
-     write(0x14,accel_config);
+    write(GYRO_CONFIG,_gyro << GYRO_FS_SEL);
+    write(ACCEL_CONFIG,_accel << ACCEL_FS_SEL);
 
-     bool _verify = (read(0x01) & 0b0110) == gyro_config 
-        && (read(0x14) & 0b0110) == accel_config;
+    bool _verify = ((read(GYRO_CONFIG) >> GYRO_FS_SEL) & 0b11) == _gyro 
+    && ((read(ACCEL_CONFIG) >> ACCEL_FS_SEL) & 0b11) == _accel;
 
-    write(0x7F,0x00);
 
     if(!_verify) return -1;
     
@@ -150,25 +145,25 @@ float MPU6500::surveybias(int reftime){
 }
 
 uint8_t MPU6500::whoami(){
-    return read(0b00);
+    return read(0x75);
 }
 int16_t MPU6500::accelX_raw(){
-    return read16(0x2D);
+    return read16(0x3B);
 }
 int16_t MPU6500::accelY_raw(){
-    return read16(0x2F);
+    return read16(0x3D);
 }
 int16_t MPU6500::accelZ_raw(){
-    return read16(0x31);
+    return read16(0x3F);
 }
 int16_t MPU6500::gyroX_raw(){
-    return read16(0x33);
+    return read16(0x41);
 }
 int16_t MPU6500::gyroY_raw(){
-    return read16(0x35);
+    return read16(0x43);
 }
 int16_t MPU6500::gyroZ_raw(){
-    return read16(0x37);
+    return read16(0x45);
 }
 float MPU6500::accelX(){
     return (float)accelX_raw() * accel_sensitivity;
