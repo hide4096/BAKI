@@ -1,8 +1,7 @@
 #include "peripheral.hpp"
 #include <cstring>
 
-PCA9632 led(I2C_NUM_0,LED_ADRS);
-MPU6500 gyro;
+PCA9632 led;
 
 void initSensors() {
     esp_err_t ret;
@@ -23,7 +22,8 @@ void initSensors() {
     ESP_ERROR_CHECK(ret);
     ret = i2c_driver_install(I2C_NUM_0,I2C_MODE_MASTER,0,0,0);
     ESP_ERROR_CHECK(ret);
-    led.init();
+
+    led.init(I2C_NUM_0,LED_ADRS);
 
     //SPI
     //MPU6500

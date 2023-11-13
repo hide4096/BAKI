@@ -7,8 +7,6 @@
 
 extern "C" void app_main(void){
     initSensors();
-    /*led.init();
-    vTaskDelay(1000/portTICK_PERIOD_MS);
     xTaskCreate([](void*){led.blink();}, "blink", 4096, NULL, 1, NULL);
     while(1){
         
