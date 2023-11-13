@@ -10,7 +10,7 @@
 constexpr gpio_num_t    LED_SDA = GPIO_NUM_37;
 constexpr gpio_num_t    LED_SCL = GPIO_NUM_38;
 constexpr int           LED_FREQ = 1000000;
-constexpr uint8_t       LED_ADRS = 0x40;
+constexpr uint8_t       LED_ADRS = 0x62;
 
 extern PCA9632 led;
 

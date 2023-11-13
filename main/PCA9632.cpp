@@ -30,9 +30,9 @@ void PCA9632::init(i2c_port_t port, uint8_t adrs){
 
 void PCA9632::blink(){
     while(1){
-        write(0x14,0x55);
+        write(0x08,0x55);
         vTaskDelay(500 / portTICK_PERIOD_MS);
-        write(0x14,0x00);
+        write(0x08,0x00);
         vTaskDelay(500 / portTICK_PERIOD_MS);
     }
 }
