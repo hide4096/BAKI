@@ -8,5 +8,6 @@ set(COMPONENT_SRCS
     "peripheral.cpp"
     "PCA9632.cpp"
     "MPU6500.cpp"
+    "Buzzer.cpp"
     )
 register_component()

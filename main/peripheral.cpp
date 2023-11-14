@@ -3,6 +3,7 @@
 
 PCA9632 led;
 MPU6500 imu;
+BUZZER  buzz;
 
 void initSensors() {
     esp_err_t ret;
@@ -41,4 +42,11 @@ void initSensors() {
     ret = spi_bus_initialize(SPI2_HOST,&bus_imu,SPI_DMA_CH_AUTO);
     ESP_ERROR_CHECK(ret);
     imu.init(SPI2_HOST,IMU_CS);
+
+    
+}
+
+void initPeripherals() {
+    
+    buzz.init(BUZZER_CH,BUZZER_TIMER,BUZZER_PIN);
 }

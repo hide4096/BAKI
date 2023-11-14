@@ -28,11 +28,24 @@ void PCA9632::init(i2c_port_t port, uint8_t adrs){
     _init = true;
 }
 
+void PCA9632::set(uint8_t led){
+    uint8_t cmd = 0;
+    for(int i=0;i<4;i++){
+        if(led & (0b1 << i)){
+            cmd |= 0b01 << (i*2);
+        }
+    }
+    write(0x08,cmd);
+}
+
 void PCA9632::blink(){
+    uint8_t led = 0b1;
     while(1){
-        write(0x08,0x55);
-        vTaskDelay(500 / portTICK_PERIOD_MS);
-        write(0x08,0x00);
-        vTaskDelay(500 / portTICK_PERIOD_MS);
+        set(led);
+        led = led << 1;
+        if(led == 0b10000){
+            led = 0b1;
+        }
+        vTaskDelay(50/portTICK_PERIOD_MS);
     }
 }

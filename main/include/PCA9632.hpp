@@ -13,6 +13,7 @@ class PCA9632{
         ~PCA9632();
         void init(i2c_port_t port, uint8_t adrs);
         void blink();
+        void set(uint8_t led);
     private:
         bool _init = false;
         i2c_port_t _port;
