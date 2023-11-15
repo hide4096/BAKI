@@ -3,73 +3,83 @@
 #define BDC_MCPWM_TIMER_RESOLUTION_HZ 10000000 // 10MHz, 1 tick = 0.1us
 #define BDC_MCPWM_FREQ_HZ             250000    // 250KHz PWM
 #define BDC_MCPWM_DUTY_TICK_MAX       (BDC_MCPWM_TIMER_RESOLUTION_HZ / BDC_MCPWM_FREQ_HZ) // maximum value we can set for the duty cycle, in ticks
-#define BDC_R_MCPWM_GPIO_A              45
-#define BDC_R_MCPWM_GPIO_B              46
-#define BDC_L_MCPWM_GPIO_A              GPIO_NUM_41
-#define BDC_L_MCPWM_GPIO_B              GPIO_NUM_42
+#define BDC_R_MCPWM_GPIO_PH             GPIO_NUM_45
+#define BDC_R_MCPWM_GPIO_EN             GPIO_NUM_46
+#define BDC_L_MCPWM_GPIO_PH             GPIO_NUM_41
+#define BDC_L_MCPWM_GPIO_EN             GPIO_NUM_42
 #define FAN_PIN                         GPIO_NUM_13
 
-bdc_motor_handle_t motor_r = NULL;
-bdc_motor_handle_t motor_l = NULL;
+//bdc_motor_handle_t motor_r = NULL;
+//bdc_motor_handle_t motor_l = NULL;
+
+mcpwm_cmpr_handle_t comparator_r = NULL;
+mcpwm_cmpr_handle_t comparator_l = NULL;
 
 void initMotors(){
     //モタドラ
     //MODE GPIO40
-    gpio_config_t mode_conf = {};
-    mode_conf.intr_type = GPIO_INTR_DISABLE;
-    mode_conf.mode = GPIO_MODE_OUTPUT;
-    mode_conf.pin_bit_mask = (1ULL << 40) && (1ULL << 41) && (1ULL << 42);
-    //mode_conf.pin_bit_mask = (1ULL << 40);
-    mode_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
-    mode_conf.pull_up_en = GPIO_PULLUP_DISABLE;
-    gpio_config(&mode_conf);
-    gpio_set_level(GPIO_NUM_40, 0);
-    gpio_set_level(GPIO_NUM_41, 0);
-    gpio_set_level(GPIO_NUM_42, 0);
+    gpio_config_t io_conf;
+    io_conf.intr_type = GPIO_INTR_DISABLE;
+    io_conf.mode = GPIO_MODE_OUTPUT;
+    io_conf.pin_bit_mask = 
+        (1ULL<<GPIO_NUM_40) | (1ULL<<BDC_L_MCPWM_GPIO_PH) | (1ULL<<BDC_R_MCPWM_GPIO_PH) | (1ULL<<BDC_L_MCPWM_GPIO_EN) | (1ULL<<BDC_R_MCPWM_GPIO_EN);
+    io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
+    io_conf.pull_up_en = GPIO_PULLUP_DISABLE;
+    ESP_ERROR_CHECK(gpio_config(&io_conf));
+    gpio_set_level(GPIO_NUM_40, 1);
+    gpio_set_level(BDC_L_MCPWM_GPIO_PH, 0);
+    gpio_set_level(BDC_R_MCPWM_GPIO_PH, 0);
+    gpio_set_level(BDC_L_MCPWM_GPIO_EN, 0);
+    gpio_set_level(BDC_R_MCPWM_GPIO_EN, 0);
 
-    bdc_motor_config_t motor_r_config;
-    motor_r_config.pwm_freq_hz = BDC_MCPWM_FREQ_HZ;
-    motor_r_config.pwma_gpio_num = BDC_R_MCPWM_GPIO_A;
-    motor_r_config.pwmb_gpio_num = BDC_R_MCPWM_GPIO_B;
+    mcpwm_timer_handle_t timer = NULL;
+    mcpwm_timer_config_t timer_config;
+    timer_config.group_id = 0,
+    timer_config.clk_src = MCPWM_TIMER_CLK_SRC_DEFAULT;
+    timer_config.resolution_hz = BDC_MCPWM_TIMER_RESOLUTION_HZ;
+    timer_config.period_ticks = BDC_MCPWM_DUTY_TICK_MAX;
+    timer_config.count_mode = MCPWM_TIMER_COUNT_MODE_UP;
+    ESP_ERROR_CHECK(mcpwm_new_timer(&timer_config, &timer));
 
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    mcpwm_oper_handle_t oper = NULL;
+    mcpwm_operator_config_t operator_config = {};
+    operator_config.group_id = 0; // operator must be in the same group to the timer
+    ESP_ERROR_CHECK(mcpwm_new_operator(&operator_config, &oper));
+    ESP_ERROR_CHECK(mcpwm_operator_connect_timer(oper, timer));
 
-    bdc_motor_config_t motor_l_config;
-    motor_l_config.pwm_freq_hz = BDC_MCPWM_FREQ_HZ;
-    motor_l_config.pwma_gpio_num = BDC_L_MCPWM_GPIO_A;
-    motor_l_config.pwmb_gpio_num = BDC_L_MCPWM_GPIO_B;
+     //コンパレーターを作る
+    mcpwm_comparator_config_t comparator_config = {};
+    comparator_config.flags.update_cmp_on_tez = true;
+    ESP_ERROR_CHECK(mcpwm_new_comparator(oper, &comparator_config, &comparator_r));
+    ESP_ERROR_CHECK(mcpwm_new_comparator(oper, &comparator_config, &comparator_l));
 
-    bdc_motor_mcpwm_config_t mcpwm_r_config;
-    mcpwm_r_config.group_id = 0;
-    mcpwm_r_config.resolution_hz = BDC_MCPWM_TIMER_RESOLUTION_HZ;
+    //ジェネレーターを作る
+    mcpwm_gen_handle_t generator_r = NULL;
+    mcpwm_gen_handle_t generator_l = NULL;
+    mcpwm_generator_config_t generator_config = {};
+    generator_config.gen_gpio_num = BDC_R_MCPWM_GPIO_EN;
+    ESP_ERROR_CHECK(mcpwm_new_generator(oper, &generator_config, &generator_r));
+    generator_config.gen_gpio_num = BDC_L_MCPWM_GPIO_EN;
+    ESP_ERROR_CHECK(mcpwm_new_generator(oper, &generator_config, &generator_l));
 
-    bdc_motor_mcpwm_config_t mcpwm_l_config;
-    mcpwm_l_config.group_id = 0;
-    mcpwm_l_config.resolution_hz = BDC_MCPWM_TIMER_RESOLUTION_HZ;
+    // set the initial compare value
+    ESP_ERROR_CHECK(mcpwm_comparator_set_compare_value(comparator_r, 0));
+    ESP_ERROR_CHECK(mcpwm_comparator_set_compare_value(comparator_l, 0));
 
-    ESP_ERROR_CHECK(bdc_motor_new_mcpwm_device(&motor_r_config, &mcpwm_r_config, &motor_r));
-    ESP_ERROR_CHECK(bdc_motor_new_mcpwm_device(&motor_l_config, &mcpwm_l_config, &motor_l));
-
-    printf("motor init\n");
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
-
-    bdc_motor_set_speed(motor_r, 0);
-    bdc_motor_set_speed(motor_l, 0);
-
-    printf("motor set speed\n");
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
-
-    bdc_motor_enable(motor_r);
-    bdc_motor_enable(motor_l);
+    // go high on counter empty
+    ESP_ERROR_CHECK(mcpwm_generator_set_action_on_timer_event(generator_r,
+                    MCPWM_GEN_TIMER_EVENT_ACTION(MCPWM_TIMER_DIRECTION_UP, MCPWM_TIMER_EVENT_EMPTY, MCPWM_GEN_ACTION_HIGH)));
+    ESP_ERROR_CHECK(mcpwm_generator_set_action_on_timer_event(generator_l,
+                    MCPWM_GEN_TIMER_EVENT_ACTION(MCPWM_TIMER_DIRECTION_UP, MCPWM_TIMER_EVENT_EMPTY, MCPWM_GEN_ACTION_HIGH)));
+    // go low on compare threshold
+    ESP_ERROR_CHECK(mcpwm_generator_set_action_on_compare_event(generator_r,
+                    MCPWM_GEN_COMPARE_EVENT_ACTION(MCPWM_TIMER_DIRECTION_UP, comparator_r, MCPWM_GEN_ACTION_LOW)));
+    ESP_ERROR_CHECK(mcpwm_generator_set_action_on_compare_event(generator_l,
+                    MCPWM_GEN_COMPARE_EVENT_ACTION(MCPWM_TIMER_DIRECTION_UP, comparator_l, MCPWM_GEN_ACTION_LOW)));
     
-    printf("motor enable\n");
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
-
-    bdc_motor_forward(motor_r);
-    bdc_motor_forward(motor_l);
-
-    printf("motor enable\n");
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    //タイマーを有効にしてスタート
+    ESP_ERROR_CHECK(mcpwm_timer_enable(timer));
+    ESP_ERROR_CHECK(mcpwm_timer_start_stop(timer, MCPWM_TIMER_START_NO_STOP));
 
     //吸引ファン
     ledc_timer_config_t ledc_timer = {
@@ -92,24 +102,19 @@ void initMotors(){
         .hpoint         = 0
     };
     ESP_ERROR_CHECK(ledc_channel_config(&ledc_channel));
+
+    setMotorSpeed(0,0,0);
 }
 
 void setMotorSpeed(float spdR, float spdL,float fan){
-    if(spdR > 0){
-        bdc_motor_forward(motor_r);
-    }else{
-        bdc_motor_reverse(motor_r);
-    }
-    if(spdL > 0){
-        bdc_motor_forward(motor_l);
-    }else{
-        bdc_motor_reverse(motor_l);
-    }
-    float dutyR = fabs(spdR);
-    float dutyL = fabs(spdL);
 
-    bdc_motor_set_speed(motor_l, dutyL * BDC_MCPWM_DUTY_TICK_MAX);
-    bdc_motor_set_speed(motor_r, dutyR * BDC_MCPWM_DUTY_TICK_MAX);
+    if(spdR > 0)    gpio_set_level(BDC_R_MCPWM_GPIO_PH, 0);
+    else            gpio_set_level(BDC_R_MCPWM_GPIO_PH, 1);
+    if(spdL > 0)    gpio_set_level(BDC_L_MCPWM_GPIO_PH, 0);
+    else            gpio_set_level(BDC_L_MCPWM_GPIO_PH, 1);
+
+    mcpwm_comparator_set_compare_value(comparator_r, fabs(spdR) * BDC_MCPWM_DUTY_TICK_MAX);
+    mcpwm_comparator_set_compare_value(comparator_l, fabs(spdL) * BDC_MCPWM_DUTY_TICK_MAX);
 
     ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, fan * 256);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);

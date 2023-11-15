@@ -7,18 +7,18 @@ void BUZZER::init(ledc_channel_t channel, ledc_timer_t timer, gpio_num_t pin){
     _channel = channel;
     _timer = timer;
 
-    ledc_timer_config_t ledc_timer;
+    ledc_timer_config_t ledc_timer = {};
 
     ledc_timer.speed_mode       = LEDC_MODE;
     ledc_timer.duty_resolution  = LEDC_DUTY_RES;
     ledc_timer.timer_num        = _timer;
-    ledc_timer.freq_hz          = 500;  
+    ledc_timer.freq_hz          = 4000;  
     ledc_timer.clk_cfg          = LEDC_AUTO_CLK;
     
     ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));
 
     // Prepare and then apply the LEDC PWM channel configuration
-    ledc_channel_config_t ledc_channel;
+    ledc_channel_config_t ledc_channel = {};
 
     ledc_channel.speed_mode     = LEDC_MODE;
     ledc_channel.channel        = _channel;
@@ -27,6 +27,7 @@ void BUZZER::init(ledc_channel_t channel, ledc_timer_t timer, gpio_num_t pin){
     ledc_channel.gpio_num       = pin;
     ledc_channel.duty           = 8192; // Set duty to 0%
     ledc_channel.hpoint         = 0;
+    ledc_channel.flags.output_invert = 1;
 
     ESP_ERROR_CHECK(ledc_channel_config(&ledc_channel));
 
