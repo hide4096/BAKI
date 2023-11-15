@@ -32,14 +32,14 @@ uint16_t AS5047P::read16(uint16_t reg){
 void AS5047P::init(spi_host_device_t bus,gpio_num_t cs){
     esp_err_t err;
 
-    spi_device_interface_config_t dev_imu;
-    memset(&dev_imu,0,sizeof(dev_imu));
-    dev_imu.clock_speed_hz = 10*1000*1000;
-    dev_imu.mode = 1;
-    dev_imu.spics_io_num = cs;
-    dev_imu.queue_size = 1;
+    spi_device_interface_config_t dev_enc;
+    memset(&dev_enc,0,sizeof(dev_enc));
+    dev_enc.clock_speed_hz = 10*1000*1000;
+    dev_enc.mode = 1;
+    dev_enc.spics_io_num = cs;
+    dev_enc.queue_size = 1;
 
-    err = spi_bus_add_device(bus,&dev_imu,&_spi);
+    err = spi_bus_add_device(bus,&dev_enc,&_spi);
     ESP_ERROR_CHECK(err);
 
     printf("%x\r\n",read16(0x3FFC));
