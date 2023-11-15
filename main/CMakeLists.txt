@@ -9,5 +9,6 @@ set(COMPONENT_SRCS
     "PCA9632.cpp"
     "MPU6500.cpp"
     "Buzzer.cpp"
+    "Motor.cpp"
     )
 register_component()
