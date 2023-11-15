@@ -128,8 +128,7 @@ void sincurve(){
         spdR = sin(t);
         spdL = sin(t);
         fan = 0.5 * sin(t) + 0.5;
-        setMotorSpeed(spdR*0.5,spdL*0.5,0);
-        //setMotorSpeed(0,0,fan);
+        setMotorSpeed(spdR*0.5,spdL*0.5,fan);
         t += 0.01;
         vTaskDelay(10 / portTICK_PERIOD_MS);
     }

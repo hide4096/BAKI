@@ -25,9 +25,8 @@ void BUZZER::init(ledc_channel_t channel, ledc_timer_t timer, gpio_num_t pin){
     ledc_channel.timer_sel      = _timer;
     ledc_channel.intr_type      = LEDC_INTR_DISABLE;
     ledc_channel.gpio_num       = pin;
-    ledc_channel.duty           = 8192; // Set duty to 0%
+    ledc_channel.duty           = 0; // Set duty to 0%
     ledc_channel.hpoint         = 0;
-    ledc_channel.flags.output_invert = 1;
 
     ESP_ERROR_CHECK(ledc_channel_config(&ledc_channel));
 
