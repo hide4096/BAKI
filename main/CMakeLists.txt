@@ -11,5 +11,6 @@ set(COMPONENT_SRCS
     "Buzzer.cpp"
     "Motor.cpp"
     "adc.cpp"
+    "AS5047P.cpp"
     )
 register_component()

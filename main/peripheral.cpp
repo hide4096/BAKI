@@ -4,6 +4,8 @@
 PCA9632 led;
 MPU6500 imu;
 BUZZER  buzz;
+AS5047P encR;
+AS5047P encL;
 
 void initSensors() {
     esp_err_t ret;
@@ -43,6 +45,21 @@ void initSensors() {
     ESP_ERROR_CHECK(ret);
     imu.init(SPI2_HOST,IMU_CS);
 
+    //AS5047P
+    spi_bus_config_t bus_enc;
+    memset(&bus_enc,0,sizeof(bus_enc));
+    bus_enc.mosi_io_num = ENC_MOSI;
+    bus_enc.miso_io_num = ENC_MISO;
+    bus_enc.sclk_io_num = ENC_CLK;
+    bus_enc.quadwp_io_num = -1;
+    bus_enc.quadhd_io_num = -1;
+    bus_enc.max_transfer_sz = 4;
+    bus_enc.intr_flags = 0;
+
+    ret = spi_bus_initialize(SPI3_HOST,&bus_enc,SPI_DMA_CH_AUTO);
+    ESP_ERROR_CHECK(ret);
+    encR.init(SPI3_HOST,ENC_CS_R);
+    encL.init(SPI3_HOST,ENC_CS_L);
     
 }
 

@@ -23,13 +23,15 @@ extern "C" void app_main(void){
 
     xTaskCreate([](void*){led.blink();}, "blink", 4096, NULL, 1, NULL);
     xTaskCreate([](void*){buzz.play();}, "buzz", 4096, NULL, 1, NULL);
-    //xTaskCreate([](void*){sincurve();}, "sincurve", 8192, NULL, 1, NULL);
-    xTaskCreate([](void*){WallSensor();}, "WallSensor", 8192, NULL, 1, NULL);
+    xTaskCreate([](void*){sincurve();}, "sincurve", 8192, NULL, 1, NULL);
+    //xTaskCreate([](void*){WallSensor();}, "WallSensor", 8192, NULL, 1, NULL);
    
     while (1){
         //printf("%1.2f\t%1.2f\t%1.2f\r",
         //    imu.accelX(),imu.accelY(),imu.accelZ());
-        vTaskDelay(10/portTICK_PERIOD_MS);
+        printf("%d\n%d\n"
+            ,encR.readAngle(),encL.readAngle());
+        vTaskDelay(1000/portTICK_PERIOD_MS);
     }
     
 }
