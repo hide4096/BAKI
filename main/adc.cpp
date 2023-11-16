@@ -1,9 +1,5 @@
 #include "include/adc.hpp"
-
-#define IRLED_FR GPIO_NUM_33
-#define IRLED_FL GPIO_NUM_17
-#define IRLED_R GPIO_NUM_21
-#define IRLED_L GPIO_NUM_18
+#include "peripheral.hpp"
 
 
 adc_oneshot_unit_handle_t adc1;
@@ -15,7 +11,7 @@ void SetIRLED(uint8_t led){
     gpio_set_level(IRLED_FR,(led>>3)&1);
 }
 
-void initadc(){
+void initADC(){
     adc_oneshot_unit_init_cfg_t adc1_init = {};
     adc1_init.unit_id = ADC_UNIT_1;
 

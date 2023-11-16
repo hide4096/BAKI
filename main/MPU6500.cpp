@@ -178,10 +178,10 @@ float MPU6500::gyroX(){
     return (float)gyroX_raw() * gyro_sensitivity;
 }
 float MPU6500::gyroY(){
-    return (float)gyroX_raw() * gyro_sensitivity;
+    return (float)gyroY_raw() * gyro_sensitivity;
 }
 float MPU6500::gyroZ(){
-    return (float)gyroX_raw() * gyro_sensitivity;
+    return (float)gyroZ_raw() * gyro_sensitivity;
 }
 
 

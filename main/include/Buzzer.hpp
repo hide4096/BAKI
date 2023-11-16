@@ -10,12 +10,11 @@
 
 
 #define LEDC_MODE               LEDC_LOW_SPEED_MODE
-#define LEDC_DUTY_RES           LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
+#define LEDC_DUTY_RES           LEDC_TIMER_10_BIT // Set duty resolution to 13 bits
 
 
 class BUZZER{
     public:
-        
         enum melody{
             A = 538,
             B = 604,

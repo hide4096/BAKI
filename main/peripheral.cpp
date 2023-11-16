@@ -65,6 +65,8 @@ void initSensors() {
 }
 
 void initPeripherals() {
-    
     buzz.init(BUZZER_CH,BUZZER_TIMER,BUZZER_PIN);
+    initSensors();
+    initMotors();
+    initADC();
 }

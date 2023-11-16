@@ -1,13 +1,10 @@
 #include "include/Motor.hpp"
+#include "peripheral.hpp"
 
 #define BDC_MCPWM_TIMER_RESOLUTION_HZ 10000000 // 10MHz, 1 tick = 0.1us
 #define BDC_MCPWM_FREQ_HZ             250000    // 250KHz PWM
 #define BDC_MCPWM_DUTY_TICK_MAX       (BDC_MCPWM_TIMER_RESOLUTION_HZ / BDC_MCPWM_FREQ_HZ) // maximum value we can set for the duty cycle, in ticks
-#define BDC_R_MCPWM_GPIO_PH             GPIO_NUM_45
-#define BDC_R_MCPWM_GPIO_EN             GPIO_NUM_46
-#define BDC_L_MCPWM_GPIO_PH             GPIO_NUM_41
-#define BDC_L_MCPWM_GPIO_EN             GPIO_NUM_42
-#define FAN_PIN                         GPIO_NUM_13
+
 
 //bdc_motor_handle_t motor_r = NULL;
 //bdc_motor_handle_t motor_l = NULL;
@@ -130,6 +127,6 @@ void sincurve(){
         fan = 0.5 * sin(t) + 0.5;
         setMotorSpeed(spdR*0.5,spdL*0.5,fan);
         t += 0.01;
-        vTaskDelay(10 / portTICK_PERIOD_MS);
+        vTaskDelay(1 / portTICK_PERIOD_MS);
     }
 }

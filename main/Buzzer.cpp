@@ -25,7 +25,7 @@ void BUZZER::init(ledc_channel_t channel, ledc_timer_t timer, gpio_num_t pin){
     ledc_channel.timer_sel      = _timer;
     ledc_channel.intr_type      = LEDC_INTR_DISABLE;
     ledc_channel.gpio_num       = pin;
-    ledc_channel.duty           = 0; // Set duty to 0%
+    ledc_channel.duty           = 512; // Set duty to 0%
     ledc_channel.hpoint         = 0;
 
     ESP_ERROR_CHECK(ledc_channel_config(&ledc_channel));
@@ -33,7 +33,7 @@ void BUZZER::init(ledc_channel_t channel, ledc_timer_t timer, gpio_num_t pin){
 }
 
 void BUZZER::freq(uint32_t freq){
-    ledc_set_duty(LEDC_MODE,_channel,4096);
+    ledc_set_duty(LEDC_MODE,_channel,512);
     ledc_update_duty(LEDC_MODE,_channel);
     ledc_set_freq(LEDC_MODE,_timer,freq);
 }
@@ -54,6 +54,7 @@ void BUZZER::music(enum melody m){
 void BUZZER::play(){
     
     while(1){
+        /*
         //birhday song
         music(C);
         music(C);
@@ -81,8 +82,8 @@ void BUZZER::play(){
         music(G);
         music(F);
         stop();
-        vTaskDelay(1000/portTICK_PERIOD_MS);
-
+        */
+        vTaskDelay(100/portTICK_PERIOD_MS);
         }
     }
 

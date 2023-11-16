@@ -18,6 +18,7 @@ class AS5047P{
 
         void init(spi_host_device_t bus,gpio_num_t cs);
         uint16_t readAngle();
+        void ShowAngle();
     private:
         gpio_num_t _cs;
         uint8_t CalcParity(uint16_t data);
