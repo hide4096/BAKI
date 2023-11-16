@@ -29,8 +29,8 @@ extern "C" void app_main(void){
     while (1){
         //printf("%1.2f\t%1.2f\t%1.2f\r",
         //    imu.accelX(),imu.accelY(),imu.accelZ());
-        printf(">ENC:%d\n"
-            ,encR.readAngle());
+        printf(">encR:%d\n",encR.readAngle());
+        printf(">encL:%d\n",encL.readAngle());
         vTaskDelay(1/portTICK_PERIOD_MS);
     }
     

@@ -56,5 +56,5 @@ void AS5047P::init(spi_host_device_t bus,gpio_num_t cs){
 
 
 uint16_t AS5047P::readAngle(){
-    return read16(0x3FFF) & 0x3FFF;
+    return read16(0x3FFF);
 }

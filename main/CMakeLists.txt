@@ -12,5 +12,6 @@ set(COMPONENT_SRCS
     "Motor.cpp"
     "adc.cpp"
     "AS5047P.cpp"
+   
     )
 register_component()
