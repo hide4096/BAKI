@@ -54,9 +54,10 @@ void initSensors() {
     bus_enc.quadwp_io_num = -1;
     bus_enc.quadhd_io_num = -1;
     bus_enc.max_transfer_sz = 4;
+    bus_enc.flags = SPICOMMON_BUSFLAG_MASTER;
     bus_enc.intr_flags = 0;
 
-    ret = spi_bus_initialize(SPI3_HOST,&bus_enc,SPI_DMA_CH_AUTO);
+    ret = spi_bus_initialize(SPI3_HOST,&bus_enc,SPI_DMA_DISABLED);
     ESP_ERROR_CHECK(ret);
     encR.init(SPI3_HOST,ENC_CS_R);
     encL.init(SPI3_HOST,ENC_CS_L);
