@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include "esp_chip_info.h"
+#include "include/setup_parameter.hpp"
 
 extern "C" void app_main(void){
     esp_chip_info_t chip_info;
@@ -13,6 +14,7 @@ extern "C" void app_main(void){
         CONFIG_IDF_TARGET, chip_info.cores);
 
     initPeripherals();
+    setupParameter();
 
     printf("Battery Voltage: %d\r\n",BatteryVoltage());
 
