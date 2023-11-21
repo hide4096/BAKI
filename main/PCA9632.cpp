@@ -49,3 +49,7 @@ void PCA9632::blink(){
         vTaskDelay(50/portTICK_PERIOD_MS);
     }
 }
+
+void PCA9632::setmode(uint8_t mode){
+    
+}

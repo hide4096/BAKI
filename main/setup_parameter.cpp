@@ -1,13 +1,10 @@
 #include "structs.hpp"
 
-t_motion *param;
-t_motion  m;
-t_control *pid;
+
+t_motion m;
 t_control c;
 
-
-
-void setupParameter()
+void setupParameter(t_motion *&param, t_control *&pid)
 {
     param = &m; //mのアドレスを指定
     pid = &c;
@@ -30,7 +27,7 @@ void setupParameter()
     pid->d.Kd = 0;
     pid->wall.Kp = 0;
 
-    
+
 
 }
 
