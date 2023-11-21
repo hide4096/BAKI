@@ -21,7 +21,7 @@ class Base_task{    // base class    タスクを作るときはこのクラス�
 
 class Search_task : public Base_task{
     public:
-        Search_task();
+        Search_task(uint8_t m_num);
         virtual int main_task_1() override;
         virtual int search() override;
     
@@ -35,7 +35,7 @@ class Search_task : public Base_task{
 
 class Run_task : public Base_task{
     public:
-        Run_task(int mode);
+        Run_task(uint8_t m_num);
         virtual int main_task_1() override;
         virtual int run() override;
     
@@ -49,7 +49,7 @@ class Run_task : public Base_task{
 
 class Turn_task : public Base_task{
     public:
-        Turn_task(int mode);
+        Turn_task(uint8_t m_num);
         virtual int main_task_1() override;
         virtual int turn() override;
     
@@ -62,7 +62,7 @@ class Turn_task : public Base_task{
 
 class Back_task : public Base_task{
     public:
-        Back_task(int mode);
+        Back_task(uint8_t m_num);
         virtual int main_task_1() override;
         virtual int back() override;
     
@@ -76,7 +76,7 @@ class Back_task : public Base_task{
 
 class Slalom_task : public Base_task{
     public:
-        Slalom_task(int mode);
+        Slalom_task(uint8_t m_num);
         virtual int main_task_1() override;
         virtual int slalom() override;
     
@@ -90,7 +90,7 @@ class Slalom_task : public Base_task{
 
 class Log_task : public Base_task{
     public:
-        Log_task(int mode);
+        Log_task(uint8_t m_num);
         virtual int main_task_1() override;
         virtual int log() override;
     
@@ -110,4 +110,5 @@ class Set { //set task
     private:
         uint8_t max_mode_num = 8;
 };
+
 
