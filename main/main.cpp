@@ -5,14 +5,6 @@
 #include <iostream>
 #include <fstream>
 #include "esp_chip_info.h"
-#include "include/setup_parameter.hpp"
-#include "Base_task.hpp"
-#include "structs.hpp"
-#include "setup_parameter.hpp"
-
-Set mode;
-t_motion motion;
-t_control control;
 
 extern "C" void app_main(void){
     esp_chip_info_t chip_info;

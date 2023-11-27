@@ -13,7 +13,13 @@ set(COMPONENT_SRCS
     "adc.cpp"
     "AS5047P.cpp"
     "Base_task.cpp"
-    "setup_parameter.cpp"
-   
-    )
+    "Search_task.cpp"
+    "Run_task.cpp"
+    "Back_task.cpp"
+    "Turn_task.cpp"
+    "Slalom_task.cpp"
+    "Log_task.cpp"
+    "Set.cpp"
+    "Interupt.cpp"
+   )
 register_component()
