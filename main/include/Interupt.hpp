@@ -1,8 +1,9 @@
 #ifndef INTERUPT_HPP
 #define INTERUPT_HPP
 
+#include "MPU6500.hpp"
 #include "Base_task.hpp"
-//#include "Set.hpp"
+#include "Set.hpp"
 
 class Interupt
 {
@@ -32,6 +33,7 @@ class Interupt
         float ang_error = 0.0;
         float ang_error_I = 0.0;
         float ang_error_p = 0.0;
+        float degree = 0.0;
 
 
 };

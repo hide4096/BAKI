@@ -6,11 +6,12 @@
 //#include <vector>
 
 #define PI 3.14159265359
-//Set set;
+Set set;
+MPU6500 IMU;
 
 Interupt::Interupt(Base_task* _task) : task(_task){
 
-    //set.set_param(task);
+    set.set_param(task);
     
     std::cout << "Interupt constructor called" << std::endl;
 }
@@ -71,10 +72,12 @@ void Interupt::calc_dist(){
 void Interupt::calc_ang(){
 
     task->set_c->P.ang_vel = task->set_m->ang_vel;
-    task->set_m->ang_vel = PI / 180.0;
+    //task->set_m->ang_vel = IMU.gyroZ() * PI / 180.0;
     task->set_v->I.ang_vel += task->set_m->ang_vel;
-    task->set_m->deg += task->set_m->ang_vel;
-    std::cout << "calc_ang" << std::endl;
+    //task->set_m->deg += IMU.gyroZ() / 1000.0;
+    degree = IMU.gyroZ() / 1000.0;
+    printf("degree : %f\n", degree);
+    //std::cout << "calc_ang" << std::endl;
     return;
 }
 

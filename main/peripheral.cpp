@@ -7,6 +7,7 @@ BUZZER  buzz;
 AS5047P encR;
 AS5047P encL;
 
+
 void initSensors() {
     esp_err_t ret;
 
@@ -70,3 +71,4 @@ void initPeripherals() {
     initMotors();
     initADC();
 }
+
