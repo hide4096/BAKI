@@ -4,6 +4,7 @@
 #include "MPU6500.hpp"
 #include "Base_task.hpp"
 #include "Set.hpp"
+#include "peripheral.hpp"
 
 class Interupt
 {

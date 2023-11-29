@@ -7,7 +7,7 @@
 
 #define PI 3.14159265359
 Set set;
-MPU6500 IMU;
+
 
 Interupt::Interupt(Base_task* _task) : task(_task){
 
@@ -75,7 +75,7 @@ void Interupt::calc_ang(){
     //task->set_m->ang_vel = IMU.gyroZ() * PI / 180.0;
     task->set_v->I.ang_vel += task->set_m->ang_vel;
     //task->set_m->deg += IMU.gyroZ() / 1000.0;
-    degree = IMU.gyroZ() / 1000.0;
+    degree = imu.gyroZ() / 1000.0;
     printf("degree : %f\n", degree);
     //std::cout << "calc_ang" << std::endl;
     return;
