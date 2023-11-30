@@ -14,19 +14,19 @@ int Run_task::main_task_1() {
 
 int Run_task::run() {
 
-    //Interupt interupt(this);
+    //Interrupt interrupt(this);
     set_s->enable = TRUE;
 
     std::cout << "set_v->tar.len : " << set_v->tar.len << std::endl;
     std::cout << "set_v->tar.vel : " << set_v->tar.vel << std::endl;
     std::cout << "set_m->acc : " << set_m->acc << std::endl;
 
-    //interupt.calc_target();
+    //interrupt.calc_target();
   
     while (((set_v->tar.len - 10) - set_m->len) > 1000.0 * (((set_v->tar.vel)*(set_v->tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
     set_m->acc)))
     {
-        length = //interupt.calc_target();
+        length = //interrupt.calc_target();
         calc_l = ((set_v->tar.len - 10) - set_m->len);
         calc_r = 1000.0 * (((set_v->tar.vel)*(set_v->tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
     set_m->acc));
@@ -39,7 +39,7 @@ int Run_task::run() {
 
     while (set_v->tar.len > set_m->len)
     {
-        //length = interupt.calc_target();
+        //length = interrupt.calc_target();
         if (set_v->tar.vel > set_v->end.vel)
         {
             set_m->acc = 0;
@@ -48,7 +48,7 @@ int Run_task::run() {
     }
     
 
-    //tar_speed = interupt.calc_target();
+    //tar_speed = interrupt.calc_target();
     std::cout << "set_m->len : " << length << std::endl;
     
 

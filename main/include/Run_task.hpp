@@ -6,7 +6,7 @@
 #include <memory>
 #include "Base_task.hpp"
 #include "structs.hpp"
-//#include "interupt.hpp"
+//#include "Interrupt.hpp"
 
 class Run_task : public Base_task{
     public:
@@ -22,7 +22,7 @@ class Run_task : public Base_task{
         t_control* con;
         t_wall_sens* sen;
         t_motion_val* val;
-        //Interupt* interupt;
+        //Interrupt* interrupt;
 };
 
 #endif

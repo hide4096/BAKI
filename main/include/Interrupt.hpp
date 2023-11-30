@@ -6,11 +6,11 @@
 #include "Set.hpp"
 #include "peripheral.hpp"
 
-class Interupt
+class Interrupt
 {
     public:
-        Interupt(Base_task* _task);
-        ~Interupt();
+        Interrupt(Base_task* _task);
+        ~Interrupt();
         float calc_target(); //  目標値を計算する
         void wall_ctl();   //  壁制御
         void FB_ctl();    //  フィードバック制御

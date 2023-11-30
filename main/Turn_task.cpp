@@ -10,7 +10,7 @@ int Turn_task::main_task_1() {
 }
 
 int Turn_task::turn_left() {
-    Interupt interupt(this);    // インタラプトはまとめられるかも
+    Interrupt interrupt(this);    // インタラプトはまとめられるかも
     /*set_s->enable = FALSE;
     set_m->flag = RIGHT;
     
@@ -28,7 +28,7 @@ int Turn_task::turn_left() {
     std::cout << "turn_left" << std::endl;
     while (1)
     {
-        interupt.calc_ang();
+        interrupt.calc_ang();
         vTaskDelay(1000/portTICK_PERIOD_MS);
     }
     
@@ -37,7 +37,7 @@ int Turn_task::turn_left() {
 }
 
 int Turn_task::turn_right() {
-    Interupt interupt(this);
+    Interrupt interrupt(this);
     set_s->enable = FALSE;
     set_m->flag = LEFT;
     

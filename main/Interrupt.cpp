@@ -1,5 +1,5 @@
 //#include "structs.hpp"
-#include "include/interupt.hpp"
+#include "include/Interrupt.hpp"
 //#include <iostream>
 //#include <string>
 //#include <memory>
@@ -9,16 +9,16 @@
 Set set;
 
 
-Interupt::Interupt(Base_task* _task) : task(_task){
+Interrupt::Interrupt(Base_task* _task) : task(_task){
 
     set.set_param(task);
     
-    std::cout << "Interupt constructor called" << std::endl;
+    std::cout << "Interrupt constructor called" << std::endl;
 }
-Interupt::~Interupt(){
-    std::cout << "Interupt destructor called" << std::endl;
+Interrupt::~Interrupt(){
+    std::cout << "Interrupt destructor called" << std::endl;
 }
-float Interupt::calc_target(){
+float Interrupt::calc_target(){
     //task->set_m->acc = 0.1;
 
     std::cout << "task->set_v->tar.vel : " << task->set_v->tar.vel << std::endl;
@@ -36,11 +36,11 @@ float Interupt::calc_target(){
 
     return task->set_m->len;
 }
-void Interupt::wall_ctl(){
+void Interrupt::wall_ctl(){
     std::cout << "wall_ctl" << std::endl;
     return;
 }
-void Interupt::FB_ctl(){
+void Interrupt::FB_ctl(){
     
     error = task->set_v->tar.vel - task->set_m->vel;
     error_I += task->set_c->I.tar.vel - task->set_v->I.vel;
@@ -63,13 +63,13 @@ void Interupt::FB_ctl(){
     return;
 }
 
-void Interupt::calc_dist(){
+void Interrupt::calc_dist(){
 
     std::cout << "calc_dist" << std::endl;
     return;
 }
 
-void Interupt::calc_ang(){
+void Interrupt::calc_ang(){
 
     task->set_c->P.ang_vel = task->set_m->ang_vel;
     //task->set_m->ang_vel = IMU.gyroZ() * PI / 180.0;
