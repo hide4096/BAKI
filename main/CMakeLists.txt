@@ -20,6 +20,6 @@ set(COMPONENT_SRCS
     "Slalom_task.cpp"
     "Log_task.cpp"
     "Set.cpp"
-    "Interupt.cpp"
+    "Interrupt.cpp"
    )
 register_component()

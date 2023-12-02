@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 #include "structs.hpp"
-//#include "interupt.hpp"
+//#include "Interrupt.hpp"
 //#include "Set.hpp"
 
 class Base_task{    // base class    タスクを作るときはこのクラスを継承する

@@ -1,5 +1,5 @@
 //#include "structs.hpp"
-#include "include/interupt.hpp"
+#include "include/Interrupt.hpp"
 //#include <iostream>
 //#include <string>
 //#include <memory>

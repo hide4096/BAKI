@@ -53,7 +53,7 @@ int Run_task::run() {
     
     
 
-    //tar_speed = interupt.calc_target();
+    //tar_speed = interrupt.calc_target();
     std::cout << "set_m->len : " << length << std::endl;
     
 
