@@ -8,7 +8,7 @@
 //#include "include/Interupt.hpp"
 #include "include/Set.hpp"
 
-Set s;
+
 float deg = 0.0;
 float gyro_ref = 0.0;
 
@@ -31,7 +31,7 @@ extern "C" void app_main(void){
     //xTaskCreate([](void*){sincurve();}, "sincurve", 8192, NULL, 1, NULL);
     //xTaskCreate([](void*){WallSensor();}, "WallSensor", 8192, NULL, 1, NULL);
     
-    s.get_main_task_1(2);
+    get_main_task_1(2);
     
     while (1){
 

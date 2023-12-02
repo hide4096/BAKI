@@ -14,38 +14,43 @@ int Run_task::main_task_1() {
 
 int Run_task::run() {
 
-    //Interupt interupt(this);
-    set_s->enable = TRUE;
+    w_sens.enable = TRUE;
 
     std::cout << "set_v->tar.len : " << set_v->tar.len << std::endl;
     std::cout << "set_v->tar.vel : " << set_v->tar.vel << std::endl;
     std::cout << "set_m->acc : " << set_m->acc << std::endl;
 
-    //interupt.calc_target();
+    m_val.max.vel = set_v->max.vel;
+    motion.acc = set_m->acc;
   
-    while (((set_v->tar.len - 10) - set_m->len) > 1000.0 * (((set_v->tar.vel)*(set_v->tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
+    while (((set_v->tar.len - 10) - motion.len) > 1000.0 * (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
     set_m->acc)))
     {
-        length = //interupt.calc_target();
-        calc_l = ((set_v->tar.len - 10) - set_m->len);
-        calc_r = 1000.0 * (((set_v->tar.vel)*(set_v->tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
+        calc_target();
+        calc_l = ((set_v->tar.len - 10) - motion.len);
+        calc_r = 1000.0 * (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
     set_m->acc));
         std::cout << "calc_l : " << calc_l << std::endl;
         std::cout << "calc_r : " << calc_r << std::endl;
+        
 
     }
 
-    set_m->acc = -(set_m->acc);
+    std::cout << "##### deceleration #####" << std::endl;
+    motion.acc = -(set_m->acc);
 
-    while (set_v->tar.len > set_m->len)
+    while (set_v->tar.len > motion.len)
     {
-        //length = interupt.calc_target();
-        if (set_v->tar.vel > set_v->end.vel)
+        calc_target();
+        if (m_val.tar.vel <= set_v->min.vel)
         {
-            set_m->acc = 0;
+            motion.acc = 0;
         }
+        std::cout << "set_v->min.vel: " << set_v->min.vel << std::endl;
+
         
     }
+    
     
 
     //tar_speed = interupt.calc_target();

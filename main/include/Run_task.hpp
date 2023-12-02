@@ -6,7 +6,7 @@
 #include <memory>
 #include "Base_task.hpp"
 #include "structs.hpp"
-//#include "interupt.hpp"
+#include "interupt.hpp"
 
 class Run_task : public Base_task{
     public:
@@ -18,11 +18,7 @@ class Run_task : public Base_task{
         float vel;
         float ang_vel;
         float deg;
-        t_motion* motion;
-        t_control* con;
-        t_wall_sens* sen;
-        t_motion_val* val;
-        //Interupt* interupt;
+        
 };
 
 #endif

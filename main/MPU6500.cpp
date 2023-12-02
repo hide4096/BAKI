@@ -145,25 +145,25 @@ float MPU6500::surveybias(int reftime){
 }
 
 uint8_t MPU6500::whoami(){
-    return read(0x75);
+    return read(0x75);  //  0x00
 }
 int16_t MPU6500::accelX_raw(){
-    return read16(0x3B);
+    return read16(0x3D);    //  0x3D
 }
 int16_t MPU6500::accelY_raw(){
-    return read16(0x3D);
+    return read16(0x3F);    //  0x3F
 }
 int16_t MPU6500::accelZ_raw(){
-    return read16(0x3F);
+    return read16(0x41);    //  0x41
 }
 int16_t MPU6500::gyroX_raw(){
-    return read16(0x41);
+    return read16(0x43);    //  0x43
 }
 int16_t MPU6500::gyroY_raw(){
-    return read16(0x43);
+    return read16(0x45);    //  0x45
 }
 int16_t MPU6500::gyroZ_raw(){
-    return read16(0x45);
+    return read16(0x47);    //  0x47
 }
 float MPU6500::accelX(){
     return (float)accelX_raw() * accel_sensitivity;

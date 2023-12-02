@@ -65,6 +65,7 @@ typedef struct
     float vel;  //velocity
     float ang_vel;  //angular velocity
     float deg;  //degree
+    float rad;  //radian
     float error; //error
     float ang_error;    //angular error
     float acc;  //acceleration
@@ -85,6 +86,7 @@ typedef struct
     t_motion_dir p;    //past
     t_motion_dir n;    //new
     t_motion max;  //max
+    t_motion min;  //min
     t_motion end;   //end
     t_motion tar;   //target
     t_motion sum;   //sum
@@ -117,6 +119,10 @@ typedef struct
     t_motion_val I;    //integral
     t_motion P;
     float Vatt;
+    float V_l;
+    float V_r;
+    float Duty_l;
+    float Duty_r;
 }t_control; //control parameter
 
 
@@ -141,8 +147,22 @@ typedef struct
     float y;
 }t_odom;    //odometry data
 
-void setupParameter(t_motion*, t_control*, t_wall_sens*, t_motion_val*);
 
+extern t_bool flag;
+extern t_local_dir l_dir;
+extern t_sens_dir s_dir;
+extern t_wall_sens w_sens;
+extern t_gyro gy;
+extern t_enc enc;
+extern t_motion motion;
+extern t_motion_dir m_dir;
+extern t_motion_val m_val;
+extern t_motor mot;
+extern t_pid pid;
+extern t_control ct;
+extern t_wall wall;
+extern t_map map;
+extern t_odom odom;
 
 
 #endif  //  STRUCTS_HPP
