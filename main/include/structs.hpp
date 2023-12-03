@@ -54,6 +54,7 @@ typedef struct
 typedef struct 
 {
     unsigned int angle;
+    t_sens_dir enc_data;
     t_sens_dir locate;
     t_sens_dir p_locate;
     t_sens_dir diff_pulse;

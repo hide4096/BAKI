@@ -1,5 +1,5 @@
-#ifndef INTERUPT_HPP
-#define INTERUPT_HPP
+#ifndef INTERRUPT_HPP
+#define INTERRUPT_HPP
 
 #include <iostream>
 #include <string>
@@ -16,7 +16,7 @@
 
 
 
-void Interupt();
+void Interrupt();
 void calc_target(); //  目標値を計算する
 void wall_ctl();   //  壁制御
 void FB_ctl();    //  フィードバック制御

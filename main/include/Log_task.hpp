@@ -6,7 +6,7 @@
 #include <memory>
 #include "Base_task.hpp"
 #include "structs.hpp"
-#include "Interupt.hpp"
+#include "Interrupt.hpp"
 
 class Log_task : public Base_task{
     public:

@@ -108,6 +108,11 @@ void FB_ctl(){
 
 void calc_dist(){
 
+    enc.enc_data.l = encL.readAngle();
+    enc.enc_data.r = encR.readAngle();
+
+    enc.locate.l = enc.enc_data.l;
+
     std::cout << "calc_dist" << std::endl;
     return;
 }
@@ -122,7 +127,7 @@ void calc_ang(){
     return;
 }
 
-void Interupt(){    //  xtaskcreate
+void Interrupt(){    //  xtaskcreate
 
     while (1)
     {
@@ -135,5 +140,5 @@ void Interupt(){    //  xtaskcreate
     
      
     
-    std::cout << "Interupt constructor called" << std::endl;
+    std::cout << "Interrupt constructor called" << std::endl;
 }
