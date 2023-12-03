@@ -81,7 +81,7 @@ void MPU6500::init(spi_host_device_t bus,gpio_num_t cs){
         return;
     }
     
-    if(changesens(3,1) == -1){
+    if(changesens(2,1) == -1){
         while (1) vTaskDelay(1);
     }
 }
@@ -148,13 +148,13 @@ uint8_t MPU6500::whoami(){
     return read(0x75);  //  0x00
 }
 int16_t MPU6500::accelX_raw(){
-    return read16(0x3D);    //  0x3D
+    return read16(0x3B);    //  0x3D
 }
 int16_t MPU6500::accelY_raw(){
-    return read16(0x3F);    //  0x3F
+    return read16(0x3D);    //  0x3F
 }
 int16_t MPU6500::accelZ_raw(){
-    return read16(0x41);    //  0x41
+    return read16(0x3F);    //  0x41
 }
 int16_t MPU6500::gyroX_raw(){
     return read16(0x43);    //  0x43

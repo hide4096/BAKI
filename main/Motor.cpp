@@ -12,6 +12,7 @@
 mcpwm_cmpr_handle_t comparator_r = NULL;
 mcpwm_cmpr_handle_t comparator_l = NULL;
 
+
 void initMotors(){
     //モタドラ
     //MODE GPIO40
@@ -110,8 +111,14 @@ void setMotorSpeed(float spdR, float spdL,float fan){
     if(spdL > 0)    gpio_set_level(BDC_L_MCPWM_GPIO_PH, 0);
     else            gpio_set_level(BDC_L_MCPWM_GPIO_PH, 1);
 
-    mcpwm_comparator_set_compare_value(comparator_r, fabs(spdR) * BDC_MCPWM_DUTY_TICK_MAX);
-    mcpwm_comparator_set_compare_value(comparator_l, fabs(spdL) * BDC_MCPWM_DUTY_TICK_MAX);
+    float dutyR = fabs(spdR);
+    float dutyL = fabs(spdL);
+
+    if(dutyR > 1.0) dutyR = 1.0;
+    if(dutyL > 1.0) dutyL = 1.0;
+
+    mcpwm_comparator_set_compare_value(comparator_r, (dutyR) * BDC_MCPWM_DUTY_TICK_MAX);
+    mcpwm_comparator_set_compare_value(comparator_l, (dutyL) * BDC_MCPWM_DUTY_TICK_MAX);
 
     ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, fan * 256);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);

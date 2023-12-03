@@ -96,8 +96,8 @@ typedef struct
 
 typedef struct 
 {
-    float tire_diameter;
-    float tire_radius;
+    float tire_diameter = 0.0132;
+    float tire_radius = tire_diameter / 2.0;
     float R;
     float Kt;
     float Ke;
@@ -124,6 +124,7 @@ typedef struct
     float V_r;
     float Duty_l;
     float Duty_r;
+    int time_count;
 }t_control; //control parameter
 
 

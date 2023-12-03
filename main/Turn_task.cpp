@@ -3,7 +3,8 @@
 Turn_task::Turn_task() : Base_task() {}
 
 int Turn_task::main_task_1() {
-    turn_left();
+    turn_check();
+    //turn_left();
     //turn_right();
     std::cout << "main_task_1 : Turn" << std::endl;
     return 0;
@@ -17,29 +18,31 @@ int Turn_task::turn_left() {
     m_val.max.ang_vel = set_v->tar.ang_vel;
     motion.ang_acc = set_m->ang_acc;
     
-
+    std::cout << "turn_left" << std::endl;
 
     local_rad = motion.rad;
     while((set_v->tar.rad - (motion.rad - local_rad)) > (m_val.tar.ang_vel * m_val.tar.ang_vel) / (2.0 * set_m->ang_acc)){
-        calc_target();
+        /*calc_target();
         calc_l = ((set_v->tar.rad - local_rad) - motion.rad);
         calc_r = (m_val.tar.ang_vel * m_val.tar.ang_vel) / (2.0 * set_m->ang_acc);
         std::cout << "calc_l : " << calc_l << std::endl;
         std::cout << "calc_r : " << calc_r << std::endl;
-        std::cout << "motion.rad : " << motion.rad << std::endl;
+        std::cout << "motion.rad : " << motion.rad << std::endl;*/
+        vTaskDelay(1);
 
     }
 
-    std::cout << "##### deceleration #####" << std::endl;
+    //std::cout << "##### deceleration #####" << std::endl;
 
     motion.ang_acc = -(set_m->ang_acc);
     while(set_v->tar.rad > (motion.rad - local_rad)){
-        calc_target();
-        std::cout << "motion.rad : " << motion.rad << std::endl;
+        //calc_target();
+        //std::cout << "motion.rad : " << motion.rad << std::endl;
+        vTaskDelay(1);
     }
 
     
-    std::cout << "turn_left" << std::endl;
+    //std::cout << "turn_left" << std::endl;
     return 0;
 }
 
@@ -62,3 +65,23 @@ int Turn_task::turn_right() {
     std::cout << "turn_right" << std::endl;
     return 0;
 }
+
+void Turn_task::turn_check() {
+    std::cout << "turn_check" << std::endl;
+
+    w_sens.enable = FALSE;
+    motion.flag = LEFT;
+
+    m_val.max.ang_vel = 0.0;
+    motion.ang_acc = 0.0;
+
+    m_val.tar.rad = 0.0;
+
+    while (1)
+    {
+        vTaskDelay(1);
+    }
+    
+    return;
+}   //  ターンチェック
+

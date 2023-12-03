@@ -10,6 +10,8 @@
 
 #define AS5047P_WHO_AM_I 0x70
 #define AS5047P_READ_FLAG 0x4000
+#define ENC_MAX 16384
+#define ENC_HALF 8192
 
 class AS5047P{
     public:

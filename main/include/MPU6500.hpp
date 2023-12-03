@@ -37,9 +37,10 @@ class MPU6500{
         float gyroX();
         float gyroY();
         float gyroZ();
+        float gyro_sensitivity=1,accel_sensitivity=1;
     private:
         spi_device_handle_t _spi;
-        float gyro_sensitivity=1,accel_sensitivity=1;
+        
 
         uint8_t whoami();
         int changesens(uint8_t _gyro,uint8_t _accel);

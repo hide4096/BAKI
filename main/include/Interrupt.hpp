@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <cmath>
 #include "structs.hpp"
 #include "Base_task.hpp"
 #include "Search_task.hpp"
@@ -16,7 +17,8 @@
 
 
 
-void Interrupt();
+
+void Interrupt(void* pvparam);
 void calc_target(); //  目標値を計算する
 void wall_ctl();   //  壁制御
 void FB_ctl();    //  フィードバック制御

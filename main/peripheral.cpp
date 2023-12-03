@@ -70,5 +70,6 @@ void initPeripherals() {
     initSensors();
     initMotors();
     initADC();
+    gy.gyro_ref = imu.surveybias(1000);
 }
 
