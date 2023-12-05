@@ -106,8 +106,8 @@ void initMotors(){
 
 void setMotorSpeed(float spdR, float spdL,float fan){
 
-    if(spdR > 0)    gpio_set_level(BDC_R_MCPWM_GPIO_PH, 0);
-    else            gpio_set_level(BDC_R_MCPWM_GPIO_PH, 1);
+    if(spdR > 0)    gpio_set_level(BDC_R_MCPWM_GPIO_PH, 1); //  右モータ反転させてつけた
+    else            gpio_set_level(BDC_R_MCPWM_GPIO_PH, 0);
     if(spdL > 0)    gpio_set_level(BDC_L_MCPWM_GPIO_PH, 0);
     else            gpio_set_level(BDC_L_MCPWM_GPIO_PH, 1);
 
@@ -117,8 +117,11 @@ void setMotorSpeed(float spdR, float spdL,float fan){
     if(dutyR > 1.0) dutyR = 1.0;
     if(dutyL > 1.0) dutyL = 1.0;
 
-    mcpwm_comparator_set_compare_value(comparator_r, (dutyR) * BDC_MCPWM_DUTY_TICK_MAX);
-    mcpwm_comparator_set_compare_value(comparator_l, (dutyL) * BDC_MCPWM_DUTY_TICK_MAX);
+    esp_err_t MCPWM_ERROR_R = mcpwm_comparator_set_compare_value(comparator_r, (dutyR) * (BDC_MCPWM_DUTY_TICK_MAX - 1));
+    esp_err_t MCPWM_ERROR_L = mcpwm_comparator_set_compare_value(comparator_l, (dutyL) * (BDC_MCPWM_DUTY_TICK_MAX - 1));
+
+    if(MCPWM_ERROR_R != ESP_OK) printf("MCPWM_ERROR_R : %f    spdR : %f\n", dutyR, spdR);
+
 
     ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, fan * 256);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
@@ -132,7 +135,11 @@ void sincurve(){
         spdR = sin(t);
         spdL = sin(t);
         fan = 0.5 * sin(t) + 0.5;
-        setMotorSpeed(spdR*0.5,spdL*0.5,fan);
+        if(isnan(spdR)){
+            printf("%f,\r\n",t);
+            
+        }
+        setMotorSpeed(spdR*0.5,0,fan);
         t += 0.01;
         vTaskDelay(1 / portTICK_PERIOD_MS);
     }

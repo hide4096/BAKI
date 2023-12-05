@@ -33,10 +33,10 @@ void initADC(){
     SetIRLED(0b0000);
 }
 
-int BatteryVoltage(){
+float BatteryVoltage(){
     int _raw=0;
     ESP_ERROR_CHECK(adc_oneshot_read(adc1, ADC_CHANNEL_2, &_raw));
-    return _raw;
+    return (float)((float)(_raw)*(4.2 / 1000.0));
 }
 
 void ReadSensor(int* sensors,uint8_t mask){

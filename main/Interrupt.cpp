@@ -27,6 +27,26 @@ t_odom odom;
 #define MMPP mot.tire_diameter * M_PI / ENC_MAX
 
 
+void init_structs(){
+    memset(&s_dir, 0, sizeof(s_dir));
+    memset(&w_sens, 0, sizeof(w_sens));
+    memset(&gy, 0, sizeof(gy));
+    memset(&enc, 0, sizeof(enc));
+    memset(&motion, 0, sizeof(motion));
+    memset(&m_dir, 0, sizeof(m_dir));
+    memset(&m_val, 0, sizeof(m_val));
+    memset(&mot, 0, sizeof(mot));
+    memset(&pid, 0, sizeof(pid));
+    memset(&ct, 0, sizeof(ct));
+    memset(&wall, 0, sizeof(wall));
+    memset(&map, 0, sizeof(map));
+    memset(&odom, 0, sizeof(odom));
+    mot.tire_diameter = 0.0132;
+    mot.tire_radius = 0.0066;
+    return;
+}
+
+
 void calc_target(){ //  目標値を計算する
 
     /*std::cout << "m_val.tar.vel : " << m_val.tar.vel << std::endl;
@@ -104,10 +124,16 @@ void FB_ctl(){  //フィードバック制御
     ct.V_l += motion.ang_error * (ct.o.Kp) + m_val.I.ang_error * (ct.o.Ki) - ct.P.ang_error * (ct.o.Kd);
     ct.V_r -= motion.ang_error * (ct.o.Kp) + m_val.I.ang_error * (ct.o.Ki) - ct.P.ang_error * (ct.o.Kd);
 
-    ct.Duty_l = ct.V_l / ct.Vatt;
-    ct.Duty_r = ct.V_r / ct.Vatt;
+    /*ct.Duty_l = ct.V_l / ct.Vatt;
+    ct.Duty_r = ct.V_r / ct.Vatt;*/
 
-    setMotorSpeed(ct.Duty_l, ct.Duty_r, 0.0);
+    ct.Duty_l = ct.V_l / BatteryVoltage();
+    ct.Duty_r = ct.V_r / BatteryVoltage();
+
+    //std::cout << "ct.Duty_l : " << ct.Duty_l << std::endl;
+    //std::cout << "ct.Duty_r : " << ct.Duty_r << std::endl;
+
+    setMotorSpeed(ct.Duty_r, ct.Duty_l, 0.0);
 
     
 
@@ -146,8 +172,8 @@ void calc_dist(){   //  走行距離を計算する
 
     //std::cout << "motion.len : " << motion.len * 1000.0 << std::endl;
 
-    m_dir.l.vel = (len_L / 1000.0) / 0.001; // 1ms
-    m_dir.r.vel = (len_R / 1000.0) / 0.001;
+    m_dir.l.vel = len_L / 0.001; // 1ms
+    m_dir.r.vel = len_R / 0.001;
 
     //std::cout << "m_dir.l.vel : " << m_dir.l.vel * 1000.0 << std::endl;
     //std::cout << "m_dir.r.vel : " << m_dir.r.vel *1 000.0 << std::endl;
@@ -192,7 +218,7 @@ void Interrupt(void* pvparam){    //  xtaskcreate
         calc_ang();
         
         ct.time_count++;
-
+        
         vTaskDelay(1);
     }
     

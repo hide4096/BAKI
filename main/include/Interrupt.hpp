@@ -17,7 +17,7 @@
 
 
 
-
+void init_structs();
 void Interrupt(void* pvparam);
 void calc_target(); //  目標値を計算する
 void wall_ctl();   //  壁制御

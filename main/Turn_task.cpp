@@ -70,7 +70,7 @@ void Turn_task::turn_check() {
     std::cout << "turn_check" << std::endl;
 
     w_sens.enable = FALSE;
-    motion.flag = LEFT;
+    //motion.flag = LEFT;
 
     m_val.max.ang_vel = 0.0;
     motion.ang_acc = 0.0;
@@ -79,6 +79,8 @@ void Turn_task::turn_check() {
 
     while (1)
     {
+        std::cout << "motion.rad : " << motion.rad << std::endl;
+        std::cout << "motion.len : " << motion.len << std::endl;
         vTaskDelay(1);
     }
     

@@ -8,7 +8,7 @@
 
 void initADC();
 
-int BatteryVoltage();
+float BatteryVoltage();
 void WallSensor();
 
 #endif

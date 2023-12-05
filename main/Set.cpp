@@ -26,24 +26,31 @@ void set_param(Base_task *task){
     std::shared_ptr<t_wall_sens> sens = std::make_shared<t_wall_sens>();
 
     param->acc = 0.0;
-    param->ang_acc = M_PI;
+    param->ang_acc = 0.0;
     val->tar.vel = 0.0;
     val->tar.ang_vel = M_PI;
     val->tar.rad = M_PI / 2.0;
     val->tar.len = 90;
-    val->max.vel = 0.3;
-    val->max.ang_vel = 0;
-    val->min.vel = 0.1;
+    val->max.vel = 0.0;
+    val->max.ang_vel = 0.0;
+    val->min.vel = 0.0;
     val->end.vel = 0.0;
-    ctl->v.Kp = ct.v.Kp = 0.0;
-    ctl->v.Ki = ct.v.Ki = 0;
-    ctl->v.Kd = ct.v.Kd = 0;
-    ctl->o.Kp = ct.o.Kp = 5.0;
-    ctl->o.Ki = ct.o.Ki = 0;
-    ctl->o.Kd = ct.o.Kd = 0;
+
+    // 速度制御ゲイン
+    ctl->v.Kp = ct.v.Kp = 2.0;
+    ctl->v.Ki = ct.v.Ki = 300.0;
+    ctl->v.Kd = ct.v.Kd = 0.0;
+
+    // 角速度制御ゲイン
+    ctl->o.Kp = ct.o.Kp = 0.0;
+    ctl->o.Ki = ct.o.Ki = 0.0;
+    ctl->o.Kd = ct.o.Kd = 0.0;
+
+    // 壁制御ゲイン
     ctl->wall.Kp = ct.wall.Kp = 0;
     ctl->wall.Ki = ct.wall.Ki = 0;
     ctl->wall.Kd = ct.wall.Kd = 0;
+
     sens->th_wall.fl = 0;
     sens->th_wall.fr = 0;
     sens->th_wall.l = 0;

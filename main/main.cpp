@@ -17,7 +17,7 @@ void CreateTasks(){
 
 extern "C" void app_main(void){
 
-    
+    init_structs();
     esp_chip_info_t chip_info;
     esp_chip_info(&chip_info);
     printf("Chip: %s\tCores: %d\r\n",
@@ -27,7 +27,7 @@ extern "C" void app_main(void){
     //gyro_ref = imu.surveybias(1000);
     //setupParameter( motion, control );
 
-    printf("Battery Voltage: %d\r\n",BatteryVoltage());
+    printf("Battery Voltage: %f\r\n",BatteryVoltage());
 
     //xTaskCreate([](void*){led.blink();}, "blink", 4096, NULL, 1, NULL);
     //xTaskCreate([](void*){buzz.play();}, "buzz", 4096, NULL, 1, NULL);
