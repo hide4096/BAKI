@@ -72,10 +72,10 @@ void Turn_task::turn_check() {
     w_sens.enable = FALSE;
     //motion.flag = LEFT;
 
-    m_val.max.ang_vel = 0.0;
-    motion.ang_acc = 0.0;
+    //m_val.max.ang_vel = 0.0;
+    //motion.ang_acc = 0.0;
 
-    m_val.tar.rad = 0.0;
+    //m_val.tar.rad = 0.0;
 
     while (1)
     {

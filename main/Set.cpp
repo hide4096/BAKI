@@ -37,13 +37,13 @@ void set_param(Base_task *task){
     val->end.vel = 0.0;
 
     // 速度制御ゲイン
-    ctl->v.Kp = ct.v.Kp = 2.0;
-    ctl->v.Ki = ct.v.Ki = 300.0;
+    ctl->v.Kp = ct.v.Kp = 1.0;   // 1.5 2.0
+    ctl->v.Ki = ct.v.Ki = 300.0; // 400.0 300.0
     ctl->v.Kd = ct.v.Kd = 0.0;
 
     // 角速度制御ゲイン
-    ctl->o.Kp = ct.o.Kp = 0.0;
-    ctl->o.Ki = ct.o.Ki = 0.0;
+    ctl->o.Kp = ct.o.Kp = 0.20; // 0.20
+    ctl->o.Ki = ct.o.Ki = 80.0; // 80.0
     ctl->o.Kd = ct.o.Kd = 0.0;
 
     // 壁制御ゲイン
