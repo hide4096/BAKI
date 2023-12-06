@@ -13,7 +13,7 @@ float gyro_ref = 0.0;
 
 void CreateTasks(){ // タスク優先順位 1 ~ 25
     xTaskCreatePinnedToCore(Interrupt, "interrupt", 8192, NULL, 1, NULL, 0);
-    //xTaskCreatePinnedToCore(WallSensor, "WallSensor", 8192, NULL, 1, NULL, 0);
+    xTaskCreatePinnedToCore(WallSensor, "WallSensor", 8192, NULL, 2, NULL, 0);
 }
 
 extern "C" void app_main(void){
@@ -28,7 +28,7 @@ extern "C" void app_main(void){
     //gyro_ref = imu.surveybias(1000);
     //setupParameter( motion, control );
 
-    printf("Battery Voltage: %f\r\n",BatteryVoltage());
+    //printf("Battery Voltage: %f\r\n",BatteryVoltage());
 
     //xTaskCreate([](void*){led.blink();}, "blink", 4096, NULL, 1, NULL);
     //xTaskCreate([](void*){buzz.play();}, "buzz", 4096, NULL, 1, NULL);
@@ -40,9 +40,9 @@ extern "C" void app_main(void){
     
     CreateTasks();
     //sincurve();
-    //set_mode();
+    set_mode();
     //led.blink();
-    get_main_task_1(2);
+    //get_main_task_1(2);
     
     while (1){
         

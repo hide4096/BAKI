@@ -1,5 +1,6 @@
 #include "include/adc.hpp"
 #include "peripheral.hpp"
+#include <rom/ets_sys.h>
 
 
 adc_oneshot_unit_handle_t adc1;
@@ -54,15 +55,27 @@ void WallSensor(void* pvparam){
         ReadSensor(before,0b1111);
         SetIRLED(0b1010);
         vTaskDelay(1);
+        //ets_delay_us(10);
         ReadSensor(sensors,0b1010);
         SetIRLED(0b0101);
         vTaskDelay(1);
+        //ets_delay_us(10);
         ReadSensor(sensors,0b0101);
         SetIRLED(0b0000);
-        printf(">FL:%d\n",sensors[0]-before[0]);
+        //ets_delay_us(10);
+        vTaskDelay(1/portTICK_PERIOD_MS);
+        ct.Vatt = BatteryVoltage(); // 他のタスクやループ内で呼ぼうとするとADCが上手く読めないのでここで呼ぶ
+
+        w_sens.val.fl = sensors[0] - before[0];
+        w_sens.val.l = sensors[1] - before[1];
+        w_sens.val.r = sensors[2] - before[2];
+        w_sens.val.fr = sensors[3] - before[3];
+        /*printf(">FL:%d\n",sensors[0]-before[0]);
         printf(">L:%d\n",sensors[1]-before[1]);
         printf(">R:%d\n",sensors[2]);
-        printf(">FR:%d\n",sensors[3]-before[3]);
-        vTaskDelay(10/portTICK_PERIOD_MS);
+        printf(">FR:%d\n",sensors[3]-before[3]);*/
+        //printf(">ct.Vatt:%f\n",ct.Vatt);
+        printf(">FL : %d,  >L : %d,  >R : %d,  >FR : %d\n",w_sens.val.fl, w_sens.val.l, w_sens.val.r, w_sens.val.fr);
+        
     }
 }

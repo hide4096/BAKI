@@ -26,6 +26,10 @@ typedef struct
     int l;  //left
     int r;  //right
     int b;  //back
+    t_bool FL;
+    t_bool FR;
+    t_bool L;
+    t_bool R;
 }t_sens_dir;    //sensor direction data
 
 typedef struct 
@@ -37,8 +41,8 @@ typedef struct
     t_sens_dir ref;  //sensor value reference
     t_sens_dir th_wall;  //wall threshold value
     t_sens_dir th_control;   //control threshold value
-    t_sens_dir wall; //wall true or false
-    t_sens_dir control;  //control true or false
+    t_sens_dir is_wall; //wall true or false
+    t_sens_dir is_control;  //control true or false
     t_bool enable;  //enable or disable
 }t_wall_sens;  //wall sensor data
 
@@ -54,7 +58,7 @@ typedef struct
 typedef struct 
 {
     unsigned int angle;
-    t_sens_dir enc_data;
+    t_sens_dir data;
     t_sens_dir locate;
     t_sens_dir p_locate;
     t_sens_dir diff_pulse;
@@ -72,6 +76,8 @@ typedef struct
     float acc;  //acceleration
     float ang_acc;  //angular acceleration
     float len;   //length
+    float wall_val;
+    float wall_error;   //wall error
     t_local_dir flag;
 }t_motion;  //motion parameter
 
@@ -98,7 +104,7 @@ typedef struct
 {
     float tire_diameter;
     float tire_radius;
-    float R;
+    //float R;
     float Kt;
     float Ke;
     float truque;

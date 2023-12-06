@@ -76,43 +76,46 @@ void initPeripherals()
 void set_mode()
 {
     uint8_t mode_led = 0b1;
+    led.set(mode_led);
     int mode = 0;
     while (1)
     {
         
         
 
-        if (motion.vel > 0.1)
+        if (motion.vel > 0.05)
         {
-            if (mode_led == 0b10000)
+            if (mode_led >= 0b1111)
             {
                 mode_led = 0b1;
                 mode = 0;
             }
             else
             {
-                mode_led = mode_led << 1;
+                mode_led++;
                 mode++;
             }
         }
-        if (motion.vel < -0.1)
+        if (motion.vel < -0.05)
         {
-            if (mode_led == 0b1)
+            if (mode_led <= 0b1)
             {
-                mode_led = 0b10000;
-                mode = 3;
+                mode_led = 0b1111;
+                mode = 15;
             }
             else
             {
-                mode_led = mode_led >> 1;
+                mode_led--;
                 mode--;
             }
         }
         led.set(mode_led);
 
-        std::cout << "motion.vel : " << motion.vel << std::endl;
-        std::cout << "mode_led : " << mode_led << std::endl;
+        /*std::cout << "motion.vel : " << motion.vel << std::endl;
+        printf("mode_led : %d\n", mode_led);
         std::cout << "mode : " << mode << std::endl;
-        vTaskDelay(50 / portTICK_PERIOD_MS);
+        std::cout << "motion.rad : " << motion.rad << std::endl;*/
+        std::cout << "time : " << ct.time_count << std::endl;
+        vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }
