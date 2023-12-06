@@ -10,7 +10,7 @@ int Turn_task::main_task_1() {
     return 0;
 }
 
-int Turn_task::turn_left() {
+int Turn_task::turn_left() {    // 左旋回が正
     
     w_sens.enable = FALSE;
     motion.flag = LEFT;

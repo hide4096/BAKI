@@ -115,7 +115,8 @@ void set_mode()
         printf("mode_led : %d\n", mode_led);
         std::cout << "mode : " << mode << std::endl;
         std::cout << "motion.rad : " << motion.rad << std::endl;*/
-        std::cout << "time : " << ct.time_count << std::endl;
+        //std::cout << "time : " << ct.time_count << std::endl;
+        printf(">FL : %d,  >L : %d,  >R : %d,  >FR : %d\n",w_sens.val.fl, w_sens.val.l, w_sens.val.r, w_sens.val.fr);
         vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }

@@ -51,6 +51,8 @@ void set_param(Base_task *task){
     ctl->wall.Ki = ct.wall.Ki = 0;
     ctl->wall.Kd = ct.wall.Kd = 0;
 
+
+    // 壁センサ閾値
     sens->th_wall.fl = 0;
     sens->th_wall.fr = 0;
     sens->th_wall.l = 0;

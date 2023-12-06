@@ -47,7 +47,7 @@ void PCA9632::blink(){
             led = 0b1;
         }
 
-        std::cout << "led : " << led << std::endl;
+        printf("led : %d\n",led);
         vTaskDelay(50/portTICK_PERIOD_MS);
     }
 }
