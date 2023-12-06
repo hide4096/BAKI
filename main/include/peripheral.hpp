@@ -1,6 +1,8 @@
 #ifndef PERIPHERAL_HPP
 #define PERIPHERAL_HPP
 
+#include <iostream>
+#include <string>
 #include "driver/gpio.h"
 #include "driver/i2c.h"
 #include "driver/spi_master.h"
@@ -54,5 +56,6 @@ extern AS5047P encL;
 
 void initSensors();
 void initPeripherals();
+void set_mode();
 
 #endif

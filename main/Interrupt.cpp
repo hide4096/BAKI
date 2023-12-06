@@ -11,7 +11,7 @@ t_bool flag;
 t_local_dir l_dir;
 t_sens_dir s_dir;
 t_wall_sens w_sens;
-t_gyro gy;
+t_gyro gyro;
 t_enc enc;
 t_motion motion;
 t_motion_dir m_dir;
@@ -30,7 +30,7 @@ t_odom odom;
 void init_structs(){
     memset(&s_dir, 0, sizeof(s_dir));
     memset(&w_sens, 0, sizeof(w_sens));
-    memset(&gy, 0, sizeof(gy));
+    memset(&gyro, 0, sizeof(gyro));
     memset(&enc, 0, sizeof(enc));
     memset(&motion, 0, sizeof(motion));
     memset(&m_dir, 0, sizeof(m_dir));
@@ -193,7 +193,7 @@ void calc_dist(){   //  走行距離を計算する
 void calc_ang(){    //  角度を計算する
 
    
-    motion.ang_vel = (imu.gyroZ() - gy.gyro_ref) * (M_PI / 180.0);
+    motion.ang_vel = (imu.gyroZ() - gyro.gyro_ref) * (M_PI / 180.0);
     motion.rad += motion.ang_vel /1000.0;
 
     ct.P.ang_vel = motion.ang_vel;
@@ -218,6 +218,8 @@ void Interrupt(void* pvparam){    //  xtaskcreate
         calc_ang();
         
         ct.time_count++;
+
+        std::cout << "ct.time_count : " << ct.time_count << std::endl;
         
         vTaskDelay(1);
     }

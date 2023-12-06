@@ -154,7 +154,7 @@ extern t_bool flag;
 extern t_local_dir l_dir;
 extern t_sens_dir s_dir;
 extern t_wall_sens w_sens;
-extern t_gyro gy;
+extern t_gyro gyro;
 extern t_enc enc;
 extern t_motion motion;
 extern t_motion_dir m_dir;

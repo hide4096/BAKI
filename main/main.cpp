@@ -11,8 +11,9 @@
 float deg = 0.0;
 float gyro_ref = 0.0;
 
-void CreateTasks(){
+void CreateTasks(){ // タスク優先順位 1 ~ 25
     xTaskCreatePinnedToCore(Interrupt, "interrupt", 8192, NULL, 1, NULL, 0);
+    //xTaskCreatePinnedToCore(WallSensor, "WallSensor", 8192, NULL, 1, NULL, 0);
 }
 
 extern "C" void app_main(void){
@@ -39,11 +40,13 @@ extern "C" void app_main(void){
     
     CreateTasks();
     //sincurve();
+    //set_mode();
+    //led.blink();
     get_main_task_1(2);
     
     while (1){
         
-        
+        //printf(">time:%d   \n",ct.time_count);
         //printf(">Yaw:%.3f\n",imu.gyroZ());
         printf("timer : %d         >motion.rad:%.3f\n",ct.time_count, motion.rad);
         //printf(">ct.Duty.l:%.3f    >ct.Duty.r:%.3f\n",ct.Duty_l, ct.Duty_r);

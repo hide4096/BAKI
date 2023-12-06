@@ -79,8 +79,9 @@ void Turn_task::turn_check() {
 
     while (1)
     {
-        std::cout << "motion.rad : " << motion.rad << std::endl;
-        std::cout << "motion.len : " << motion.len << std::endl;
+        //std::cout << "motion.rad : " << motion.rad << std::endl;
+        //std::cout << "motion.len : " << motion.len << std::endl;
+        //std::cout << "time : " << ct.time_count << std::endl;
         vTaskDelay(1);
     }
     

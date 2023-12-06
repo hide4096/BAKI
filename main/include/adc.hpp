@@ -9,6 +9,6 @@
 void initADC();
 
 float BatteryVoltage();
-void WallSensor();
+void WallSensor(void* pvparam);
 
 #endif

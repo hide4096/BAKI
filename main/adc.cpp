@@ -46,7 +46,7 @@ void ReadSensor(int* sensors,uint8_t mask){
     if((mask>>3) & 1) ESP_ERROR_CHECK(adc_oneshot_read(adc1, ADC_CHANNEL_3, &sensors[3]));
 }
 
-void WallSensor(){
+void WallSensor(void* pvparam){
     int before[4];
     int sensors[4];
     while(1){
