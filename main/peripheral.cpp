@@ -80,7 +80,12 @@ void set_mode()
     int mode = 0;
     while (1)
     {
-        
+        if(w_sens.val.fl + w_sens.val.l + w_sens.val.r + w_sens.val.fr > 3000){
+            
+            get_main_task_1(mode);
+            ct.control_flag = FALSE;
+            break;
+        }
         
 
         if (motion.vel > 0.05)
@@ -116,7 +121,9 @@ void set_mode()
         std::cout << "mode : " << mode << std::endl;
         std::cout << "motion.rad : " << motion.rad << std::endl;*/
         //std::cout << "time : " << ct.time_count << std::endl;
-        printf(">FL : %d,  >L : %d,  >R : %d,  >FR : %d\n",w_sens.val.fl, w_sens.val.l, w_sens.val.r, w_sens.val.fr);
+        //printf("time : %d   BatteryVoltage : %f\n", ct.time_count, BatteryVoltage());
+        //printf(">FL : %d,  >L : %d,  >R : %d,  >FR : %d\n",w_sens.val.fl, w_sens.val.l, w_sens.val.r, w_sens.val.fr);
+        printf("motion.ang_vel : %f\n", motion.ang_vel);
         vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }

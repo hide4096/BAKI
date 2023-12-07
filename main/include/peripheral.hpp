@@ -16,6 +16,7 @@
 #include "include/Motor.hpp"
 #include "include/adc.hpp"
 #include "structs.hpp"
+#include "Set.hpp"
 
 constexpr gpio_num_t    LED_SDA = GPIO_NUM_37;
 constexpr gpio_num_t    LED_SCL = GPIO_NUM_38;

@@ -44,7 +44,7 @@ extern "C" void app_main(void){
     //led.blink();
     //get_main_task_1(2);
     
-    while (1){
+    /*while (1){
         
         //printf(">time:%d   \n",ct.time_count);
         //printf(">Yaw:%.3f\n",imu.gyroZ());
@@ -57,6 +57,6 @@ extern "C" void app_main(void){
         //calc_ang();
         
         vTaskDelay(100/portTICK_PERIOD_MS);
-    }
+    }*/
     
 }

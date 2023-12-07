@@ -17,6 +17,8 @@ int Base_task::turn_left() { return 0; }
 
 int Base_task::turn_right() { return 0; }
 
+int Base_task::turn_half() { return 0; }
+
 int Base_task::back() { return 0; }
 
 int Base_task::slalom() { return 0; }

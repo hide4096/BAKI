@@ -59,7 +59,7 @@ void calc_target()
     }
 
     // motion.len += m_val.tar.vel;
-    ct.I.tar.vel += m_val.tar.vel; // 目標積分値更新
+    // ct.I.tar.vel += m_val.tar.vel; // 目標積分値更新
 
     /*std::cout << "motion.len : " << motion.len << std::endl;
 
@@ -88,14 +88,14 @@ void calc_target()
         }
     }
 
-    ct.I.tar.ang_vel += m_val.tar.ang_vel; // 目標角速度積分値更新
+    // ct.I.tar.ang_vel += m_val.tar.ang_vel; // 目標角速度積分値更新
 
     // std::cout << "motion.rad : " << motion.rad << std::endl;
 
     return;
 }
 void wall_ctl() //  壁制御
-{ 
+{
     // 右前壁センサ
     if (w_sens.val.fl > w_sens.th_wall.fl)
     {
@@ -157,63 +157,73 @@ void wall_ctl() //  壁制御
         w_sens.is_control.R = FALSE;
     }
 
-    if(w_sens.enable == TRUE && w_sens.val.fl + w_sens.val.fr <= (w_sens.th_wall.fl + w_sens.th_wall.fr) * 5.0){
-        
-        if(w_sens.is_control.L == TRUE && w_sens.is_control.R == TRUE){
+    if (w_sens.enable == TRUE && w_sens.val.fl + w_sens.val.fr <= (w_sens.th_wall.fl + w_sens.th_wall.fr) * 5.0)
+    {
+
+        if (w_sens.is_control.L == TRUE && w_sens.is_control.R == TRUE)
+        {
             motion.wall_error = w_sens.error.r - w_sens.error.l;
         }
-        else if(w_sens.is_control.L == FALSE && w_sens.is_control.R == TRUE){
+        else if (w_sens.is_control.L == FALSE && w_sens.is_control.R == TRUE)
+        {
             motion.wall_error = w_sens.error.r;
         }
-        else if(w_sens.is_control.L == TRUE && w_sens.is_control.R == FALSE){
+        else if (w_sens.is_control.L == TRUE && w_sens.is_control.R == FALSE)
+        {
             motion.wall_error = -(w_sens.error.l);
         }
-        else{
+        else
+        {
             motion.wall_error = 0;
         }
+
+        m_val.I.wall_error += motion.wall_error / 1000.0;
+        ct.P.wall_error = (ct.P.wall_error - motion.wall_error) * 1000.0;
+
+        m_val.tar.wall_val = motion.wall_error * (ct.wall.Kp) + m_val.I.wall_error * (ct.wall.Ki) - ct.P.wall_error * (ct.wall.Kd);
+        m_val.tar.ang_vel = m_val.tar.wall_val;
+
+        ct.P.wall_error = motion.wall_error;
     }
-
-    m_val.I.wall_error += motion.wall_error / 1000.0;
-    ct.P.wall_error = (ct.P.wall_error - motion.wall_error) * 1000.0;
-
-    m_val.tar.wall_val = motion.wall_error * (ct.wall.Kp) + m_val.I.wall_error * (ct.wall.Ki) - ct.P.wall_error * (ct.wall.Kd);
-    m_val.tar.ang_vel = m_val.tar.wall_val;
-
-    ct.P.wall_error = motion.wall_error;
-    
 
     // std::cout << "wall_ctl" << std::endl;
     return;
 }
 void FB_ctl()
 { // フィードバック制御
+    if (ct.control_flag == TRUE)
+    {
+        // 速度制御
+        motion.error = m_val.tar.vel - motion.vel;
+        m_val.I.error += motion.error / 1000.0;
+        ct.P.error = (ct.P.vel - motion.vel) * 1000.0;
 
-    // 速度制御
-    motion.error = m_val.tar.vel - motion.vel;
-    m_val.I.error += motion.error / 1000.0;
-    ct.P.error = (ct.P.vel - motion.vel) * 1000.0;
+        ct.V_l = motion.error * (ct.v.Kp) + m_val.I.error * (ct.v.Ki) - ct.P.error * (ct.v.Kd);
+        ct.V_r = motion.error * (ct.v.Kp) + m_val.I.error * (ct.v.Ki) - ct.P.error * (ct.v.Kd);
 
-    ct.V_l = motion.error * (ct.v.Kp) + m_val.I.error * (ct.v.Ki) - ct.P.error * (ct.v.Kd);
-    ct.V_r = motion.error * (ct.v.Kp) + m_val.I.error * (ct.v.Ki) - ct.P.error * (ct.v.Kd);
+        // 角速度制御
+        motion.ang_error = m_val.tar.ang_vel - motion.ang_vel;
+        m_val.I.ang_error += motion.ang_error / 1000.0;
+        ct.P.ang_error = (ct.P.ang_vel - motion.ang_vel) * 1000.0;
 
-    // 角速度制御
-    motion.ang_error = m_val.tar.ang_vel - motion.ang_vel;
-    m_val.I.ang_error += motion.ang_error / 1000.0;
-    ct.P.ang_error = (ct.P.ang_vel - motion.ang_vel) * 1000.0;
+        ct.V_l += motion.ang_error * (ct.o.Kp) + m_val.I.ang_error * (ct.o.Ki) - ct.P.ang_error * (ct.o.Kd);
+        ct.V_r -= motion.ang_error * (ct.o.Kp) + m_val.I.ang_error * (ct.o.Ki) - ct.P.ang_error * (ct.o.Kd);
 
-    ct.V_l += motion.ang_error * (ct.o.Kp) + m_val.I.ang_error * (ct.o.Ki) - ct.P.ang_error * (ct.o.Kd);
-    ct.V_r -= motion.ang_error * (ct.o.Kp) + m_val.I.ang_error * (ct.o.Ki) - ct.P.ang_error * (ct.o.Kd);
+        /*ct.Duty_l = ct.V_l / ct.Vatt;
+        ct.Duty_r = ct.V_r / ct.Vatt;*/
 
-    /*ct.Duty_l = ct.V_l / ct.Vatt;
-    ct.Duty_r = ct.V_r / ct.Vatt;*/
+        ct.Duty_l = ct.V_l / ct.Vatt;
+        ct.Duty_r = ct.V_r / ct.Vatt;
 
-    ct.Duty_l = ct.V_l / ct.Vatt;
-    ct.Duty_r = ct.V_r / ct.Vatt;
+        // std::cout << "ct.Duty_l : " << ct.Duty_l << std::endl;
+        // std::cout << "ct.Duty_r : " << ct.Duty_r << std::endl;
 
-    // std::cout << "ct.Duty_l : " << ct.Duty_l << std::endl;
-    // std::cout << "ct.Duty_r : " << ct.Duty_r << std::endl;
-
-    setMotorSpeed(ct.Duty_r, ct.Duty_l, 0.0);
+        setMotorSpeed(ct.Duty_r, ct.Duty_l, 0.0);
+    }
+    else
+    {
+        setMotorSpeed(0.0, 0.0, 0.0);
+    }
 
     // std::cout << "FB_ctl" << std::endl;
     return;
@@ -284,6 +294,14 @@ void calc_ang()
     // std::cout << "motion.rad : " << motion.rad << std::endl;
 
     // std::cout << "calc_ang" << std::endl;
+    return;
+}
+
+void reset_I_gain()
+{
+    m_val.I.vel = 0.0;
+    m_val.I.ang_vel = 0.0;
+    m_val.I.wall_error = 0.0;
     return;
 }
 

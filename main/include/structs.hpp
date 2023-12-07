@@ -131,6 +131,7 @@ typedef struct
     float Duty_l;
     float Duty_r;
     int time_count;
+    t_bool control_flag;
 }t_control; //control parameter
 
 

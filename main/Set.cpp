@@ -25,20 +25,25 @@ void set_param(Base_task *task){
     std::shared_ptr<t_control> ctl = std::make_shared<t_control>();
     std::shared_ptr<t_wall_sens> sens = std::make_shared<t_wall_sens>();
 
-    param->acc = 0.0;
-    param->ang_acc = 0.0;
-    val->tar.vel = 0.0;
-    val->tar.ang_vel = M_PI;
-    val->tar.rad = M_PI / 2.0;
-    val->tar.len = 90;
-    val->max.vel = 0.0;
-    val->max.ang_vel = 0.0;
-    val->min.vel = 0.0;
-    val->end.vel = 0.0;
+    // モーションパラメータ
+    param->acc = 1.0; // 加速度
+    param->ang_acc = M_PI*4; // 角加速度
+
+    val->tar.vel = 0.3; // 目標速度
+    val->max.vel = 0.3; // 最大速度
+    val->min.vel = 0.05; // 最小速度
+    val->end.vel = 0.0; // 終了速度
+    val->tar.len = 0.09; // 目標距離
+
+    val->tar.ang_vel = M_PI; // 目標角速度
+    val->min.ang_vel = M_PI /50; // 最小角速度
+    val->tar.rad = M_PI / 2.0; // 目標角度
+    
+    val->max.ang_vel = 0.0; // 最大角速度
 
     // 速度制御ゲイン
-    ctl->v.Kp = ct.v.Kp = 1.0;   // 1.5 2.0
-    ctl->v.Ki = ct.v.Ki = 300.0; // 400.0 300.0
+    ctl->v.Kp = ct.v.Kp = 2.0;   // 1.0 1.5 2.0
+    ctl->v.Ki = ct.v.Ki = 300.0; // 300 400.0 300.0
     ctl->v.Kd = ct.v.Kd = 0.0;
 
     // 角速度制御ゲイン
@@ -53,12 +58,12 @@ void set_param(Base_task *task){
 
 
     // 壁センサ閾値
-    sens->th_wall.fl = 0;
-    sens->th_wall.fr = 0;
-    sens->th_wall.l = 0;
-    sens->th_wall.r = 0;
-    sens->th_control.l = 0;
-    sens->th_control.r = 0;
+    sens->th_wall.fl = 42;
+    sens->th_wall.fr = 47;
+    sens->th_wall.l = 25;
+    sens->th_wall.r = 31;
+    sens->th_control.l = 104;
+    sens->th_control.r = 117;
 
     ctl->Vatt = ct.Vatt = 8.4;
 
@@ -83,6 +88,6 @@ void get_main_task_1(uint8_t _mode_num){
     std::cout << "get_main_task_1" << std::endl;
     set_param(setmode[_mode_num].get());    //  パラメータを設定    main_task関数より先に呼ぶ
     call_main_task_1(setmode[_mode_num].get());    //  ポインタの配列の中から、引数で指定した番号のポインタを呼び出す
-    
+    std::cout << "Task Ficnish" << std::endl;
     return;
 }

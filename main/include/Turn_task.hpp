@@ -14,6 +14,7 @@ class Turn_task : public Base_task{
         virtual int main_task_1() override;
         virtual int turn_left() override;
         virtual int turn_right() override;
+        virtual int turn_half() override;
         void turn_check();
     
     protected:

@@ -19,6 +19,7 @@ class Base_task{    // base class    タスクを作るときはこのクラス�
         virtual int stop();
         virtual int turn_left();
         virtual int turn_right();
+        virtual int turn_half();
         virtual int back();
         virtual int slalom();
         virtual int log();

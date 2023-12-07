@@ -4,9 +4,10 @@
 Run_task::Run_task() : Base_task() {}
 
 int Run_task::main_task_1() {
-    
-    std::cout << "main_task_1 : Run" << std::endl;
+    gyro.gyro_ref = imu.surveybias(1000);
+    motion.rad = 0.0;
     run();
+    std::cout << "main_task_1 : Run" << std::endl;
     return 0;
     
     
@@ -14,49 +15,38 @@ int Run_task::main_task_1() {
 
 int Run_task::run() {
 
-    w_sens.enable = TRUE;
+    ct.control_flag = TRUE; // 制御ON
+    w_sens.enable = FALSE; // 壁制御OFF
 
-    std::cout << "set_v->tar.len : " << set_v->tar.len << std::endl;
-    std::cout << "set_v->tar.vel : " << set_v->tar.vel << std::endl;
-    std::cout << "set_m->acc : " << set_m->acc << std::endl;
+    m_val.max.vel = set_v->max.vel; // 目標（最大）速度設定
+    motion.acc = set_m->acc; // 加速度設定
 
-    m_val.max.vel = set_v->max.vel;
-    motion.acc = set_m->acc;
+    reset_I_gain(); // 積分値リセット
   
-    while (((set_v->tar.len - 10) - motion.len) > 1000.0 * (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
+    while (((set_v->tar.len - 0.01) - motion.len) > 1000.0 * (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
     set_m->acc)))
     {
-        calc_target();
-        calc_l = ((set_v->tar.len - 10) - motion.len);
-        calc_r = 1000.0 * (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
-    set_m->acc));
-        std::cout << "calc_l : " << calc_l << std::endl;
-        std::cout << "calc_r : " << calc_r << std::endl;
-        
-
+        vTaskDelay(1);
     }
 
-    std::cout << "##### deceleration #####" << std::endl;
+    //std::cout << "##### deceleration #####" << std::endl;
     motion.acc = -(set_m->acc);
 
     while (set_v->tar.len > motion.len)
     {
-        calc_target();
         if (m_val.tar.vel <= set_v->min.vel)
         {
             motion.acc = 0;
+            m_val.tar.vel = set_v->min.vel;
         }
-        std::cout << "set_v->min.vel: " << set_v->min.vel << std::endl;
-
+        vTaskDelay(1);
         
     }
     
-    
+    m_val.tar.vel = 0.0;
+    motion.acc = 0.0;
 
-    //tar_speed = interrupt.calc_target();
-    std::cout << "set_m->len : " << length << std::endl;
-    
-
+    ct.control_flag = FALSE;
     
     std::cout << "run" << std::endl;
     return 0;

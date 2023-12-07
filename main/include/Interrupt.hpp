@@ -24,6 +24,7 @@ void wall_ctl();   //  壁制御
 void FB_ctl();    //  フィードバック制御
 void calc_dist();   //  距離を計算
 void calc_ang();    //  角度を計
+void reset_I_gain();    //  積分値をリセット
 
 
 

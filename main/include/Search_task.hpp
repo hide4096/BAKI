@@ -13,14 +13,13 @@ class Search_task : public Base_task{
         Search_task();
         virtual int main_task_1() override;
         virtual int search() override;
-        
+        virtual int run() override;
+        virtual int turn_left() override;
+        virtual int turn_right() override;
+        virtual int turn_half() override;
     
     protected:
-        float vel;
-        float acc;
-        float ang_vel;
-        float max_vel;
-        float end_vel;
+        float local_rad;
 };
 
 #endif
