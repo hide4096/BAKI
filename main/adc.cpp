@@ -53,25 +53,25 @@ void WallSensor(void* pvparam){
     while(1){
         //SetIRLED(0b0000);   // 全消灯
         //vTaskDelay(10/portTICK_PERIOD_MS);   // 1ms待つ
-        ets_delay_us(30);   // 10us待つ
+        //ets_delay_us(10);   // 10us待つ
         ReadSensor(before,0b1111);  // 全消灯での値を取得 
         
-        SetIRLED(0b1010);   // fl,r点灯
+        SetIRLED(0b1001);   // fl,r点灯
         //vTaskDelay(1);    // 1ms待つ
-        ets_delay_us(30);   // 10us待つ
-        ReadSensor(sensors,0b1010); // fl,r点灯での値を取得
-        SetIRLED(0b0000);   // 全消灯
+        ets_delay_us(100);   // 10us待つ
+        ReadSensor(sensors,0b1001); // fl,r点灯での値を取得
+        //SetIRLED(0b0000);   // 全消灯
 
-        vTaskDelay(1);   // 1ms待つ
+        //vTaskDelay(1);   // 1ms待つ
         //ets_delay_us(30);   // 10us待つ
         //ReadSensor(before,0b0101);  // 全消灯での値を取得
         
-        SetIRLED(0b0101);   // l,fr点灯
+        SetIRLED(0b0110);   // l,fr点灯
         //vTaskDelay(1);  // 1ms待つ
-        ets_delay_us(30);   // 10us待つ
-        ReadSensor(sensors,0b0101); // l,fr点灯での値を取得
+        ets_delay_us(100);   // 10us待つ
+        ReadSensor(sensors,0b0110); // l,fr点灯での値を取得
         SetIRLED(0b0000);   // 全消灯
-        //vTaskDelay(1/portTICK_PERIOD_MS);   // 1ms待つ
+        vTaskDelay(1/portTICK_PERIOD_MS);   // 1ms待つ
         
 
         w_sens.val.fl = sensors[0] - before[0];
