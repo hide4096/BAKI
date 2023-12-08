@@ -429,6 +429,18 @@ void search_adachi(int gx, int gy)
 	search_task.stop();
 }
 
+void InitMaze(){
+	for(int x=0;x<MAZESIZE_X;x++){
+		for(int y=0;y<MAZESIZE_Y;y++){
+			map.wall[x][y].north = map.wall[x][y].east = map.wall[x][y].south = map.wall[x][y].west = UNKNOWN;
+			if(x == 0)				map.wall[x][y].west = WALL;
+			if(x == MAZESIZE_X-1)	map.wall[x][y].east = WALL;
+			if(y == 0)				map.wall[x][y].south = WALL;
+			if(y == MAZESIZE_Y-1)	map.wall[x][y].north = WALL;
+		}
+	}
+}
+
 void make_search_task(void *pvparam){
     while (1)
     {

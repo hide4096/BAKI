@@ -263,6 +263,7 @@ void Search_task::search_1() {
     gyro.gyro_ref = imu.surveybias(1000);
     motion.rad = 0.0;
 
+    InitMaze();
     search_adachi(8,11);
 
     std::cout << "search" << std::endl;
