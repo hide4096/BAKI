@@ -18,7 +18,7 @@ int Search_task::main_task_1() {
 
     vTaskDelay(1000);
 
-    search();
+    search_1();
     std::cout << "main_task_1 : Search" << std::endl;
     return 0;
 }
@@ -269,7 +269,7 @@ void Search_task::search_1() {
     motion.rad = 0.0;
 
     InitMaze();
-    search_adachi(8,11);
+    search_adachi(2,2);
 
     std::cout << "search" << std::endl;
     return;
@@ -441,6 +441,8 @@ void Search_task::set_wall(int x, int y) // 壁情報を記録
 	{
 		map.wall[x - 1][y].east = w_write; // 反対側から見た壁を書き込み
 	}
+
+    led.set(w_sens.is_wall.FL + (w_sens.is_wall.L << 1) + (w_sens.is_wall.R << 2) + (w_sens.is_wall.FR << 3));
 }
 
 t_bool Search_task::is_unknown(int x, int y) // 指定された区画が未探索か否かを判断する関数 未探索:TRUE　探索済:false
