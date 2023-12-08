@@ -7,8 +7,11 @@ Search_task::Search_task() : Base_task() {}
 int Search_task::main_task_1() {
     gyro.gyro_ref = imu.surveybias(1000);
     motion.rad = 0.0;
+    mypos.x = 0;
+    mypos.y = 0;
+    mypos.dir = NORTH;
 
-    search();
+    search_1();
     std::cout << "main_task_1 : Search" << std::endl;
     return 0;
 }
@@ -258,7 +261,7 @@ void Search_task::search_1() {
     gyro.gyro_ref = imu.surveybias(1000);
     motion.rad = 0.0;
 
-    xTaskCreatePinnedToCore(make_search_task, "make_search_task", 8192, NULL, 1, NULL, 1);
+    search_adachi(8,11);
 
     std::cout << "search" << std::endl;
     return;

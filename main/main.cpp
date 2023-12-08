@@ -12,8 +12,8 @@ float deg = 0.0;
 float gyro_ref = 0.0;
 
 void CreateTasks(){ // タスク優先順位 1 ~ 25
-    xTaskCreatePinnedToCore(Interrupt, "interrupt", 8192, NULL, 1, NULL, 0);
-    xTaskCreatePinnedToCore(WallSensor, "WallSensor", 8192, NULL, 2, NULL, 0);
+    xTaskCreatePinnedToCore(Interrupt, "interrupt", 8192, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(WallSensor, "WallSensor", 8192, NULL, 2, NULL, 1);
 }
 
 extern "C" void app_main(void){
