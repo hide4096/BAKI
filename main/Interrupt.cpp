@@ -19,6 +19,7 @@ t_pid pid;
 t_control ct;
 t_wall wall;
 t_map map;
+t_pos mypos;
 t_odom odom;
 
 #define MMPP mot.tire_diameter *M_PI / ENC_MAX
@@ -37,6 +38,7 @@ void init_structs()
     memset(&ct, 0, sizeof(ct));
     memset(&wall, 0, sizeof(wall));
     memset(&map, 0, sizeof(map));
+    memset(&mypos, 0, sizeof(mypos));
     memset(&odom, 0, sizeof(odom));
     mot.tire_diameter = 0.0132;
     mot.tire_radius = 0.0066;

@@ -11,6 +11,8 @@ int Base_task::search() { return 0; }
 
 int Base_task::run() { return 0; }
 
+int Base_task::run_half() { return 0; }
+
 int Base_task::stop() { return 0; }
 
 int Base_task::turn_left() { return 0; }

@@ -16,6 +16,7 @@ class Base_task{    // base class    タスクを作るときはこのクラス�
         virtual int main_task_1();
         virtual int search();
         virtual int run();
+        virtual int run_half();
         virtual int stop();
         virtual int turn_left();
         virtual int turn_right();

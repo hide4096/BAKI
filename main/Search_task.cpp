@@ -14,13 +14,21 @@ int Search_task::main_task_1() {
 }
 
 int Search_task::search() {
-    run();
+    run_half();
+
+    stop();
     turn_right();
-    run();
+    run_half();
+
+    stop();
     turn_half();
-    run();
-    turn_right();
-    run();
+    run_half();
+
+    stop();
+    turn_left();
+    run_half();
+
+    stop();
     turn_half();
     std::cout << "search" << std::endl;
     return 0;
@@ -35,6 +43,7 @@ int Search_task::run() {
     motion.acc = set_m->acc; // 加速度設定
 
     reset_I_gain(); // 積分値リセット
+    motion.len = 0.0;
   
     while (((set_v->tar.len - 0.01) - motion.len) > 1000.0 * (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
     set_m->acc)))
@@ -64,6 +73,47 @@ int Search_task::run() {
     std::cout << "run" << std::endl;
     return 0;
 }
+
+int Search_task::run_half() {
+
+    ct.control_flag = TRUE; // 制御ON
+    w_sens.enable = FALSE; // 壁制御OFF
+
+    m_val.max.vel = set_v->max.vel; // 目標（最大）速度設定
+    motion.acc = set_m->acc; // 加速度設定
+
+    reset_I_gain(); // 積分値リセット
+    motion.len = 0.0;
+  
+    while ((((set_v->tar.len / 2) - 0.01) - motion.len) > 1000.0 * (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
+    set_m->acc)))
+    {
+        vTaskDelay(1);
+    }
+
+    //std::cout << "##### deceleration #####" << std::endl;
+    motion.acc = -(set_m->acc);
+
+    while ((set_v->tar.len / 2) > motion.len)
+    {
+        if (m_val.tar.vel <= set_v->min.vel)
+        {
+            motion.acc = 0;
+            m_val.tar.vel = set_v->min.vel;
+        }
+        vTaskDelay(1);
+        
+    }
+    
+    //m_val.tar.vel = 0.0;
+    motion.acc = 0.0;
+
+    //ct.control_flag = FALSE;
+    
+    std::cout << "run" << std::endl;
+    return 0;
+}
+
 int Search_task::turn_left() {    // 左旋回が正
     
     ct.control_flag = TRUE; // 制御ON
@@ -163,5 +213,54 @@ int Search_task::turn_half() {
     
     //std::cout << "turn_left" << std::endl;
     return 0;
+}
+
+int Search_task::stop() {
+    ct.control_flag = TRUE; // 制御ON
+    w_sens.enable = FALSE; // 壁制御OFF
+
+    m_val.max.vel = set_v->max.vel; // 目標（最大）速度設定
+    motion.acc = set_m->acc; // 加速度設定
+
+    reset_I_gain(); // 積分値リセット
+    motion.len = 0.0;
+  
+    while ((((set_v->tar.len / 2) - 0.01) - motion.len) > 1000.0 * (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
+    set_m->acc)))
+    {
+        vTaskDelay(1);
+    }
+
+    //std::cout << "##### deceleration #####" << std::endl;
+    motion.acc = -(set_m->acc);
+
+    while ((set_v->tar.len / 2) > motion.len)
+    {
+        if (m_val.tar.vel <= set_v->min.vel)
+        {
+            motion.acc = 0;
+            m_val.tar.vel = set_v->min.vel;
+        }
+        vTaskDelay(1);
+        
+    }
+    
+    m_val.tar.vel = 0.0;
+    motion.acc = 0.0;
+
+    ct.control_flag = FALSE;
+    
+    std::cout << "run" << std::endl;
+    return 0;
+}
+
+void Search_task::search_1() {
+    gyro.gyro_ref = imu.surveybias(1000);
+    motion.rad = 0.0;
+
+    xTaskCreatePinnedToCore(make_search_task, "make_search_task", 8192, NULL, 1, NULL, 1);
+
+    std::cout << "search" << std::endl;
+    return;
 }
 

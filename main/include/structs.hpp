@@ -14,9 +14,23 @@ typedef enum
     LEFT = 1,
     RIGHT = 2,
     REAR = 3,
-    UNKNOWN,
     UNDEFINED,
 }t_local_dir;
+
+typedef enum
+{
+    NORTH = 0,
+    EAST = 1,
+    SOUTH = 2,
+    WEST = 3,
+}t_direction;
+
+typedef enum
+{
+    NOWALL = 0,
+    WALL = 1,
+    UNKNOWN = 2,
+}t_is_wall;
 
 typedef struct 
 {
@@ -147,13 +161,21 @@ typedef struct
 typedef struct 
 {
     t_wall wall[32][32];
-    unsigned char map[32][32];
+    unsigned char size[32][32];
 }t_map;     //map data
+
+typedef struct
+{
+    short x;
+    short y;
+    t_direction dir;
+}t_pos;     //position data
+
 
 typedef struct 
 {
-    float x;
-    float y;
+    float x_pos;
+    float y_pos;
 }t_odom;    //odometry data
 
 
@@ -171,6 +193,7 @@ extern t_pid pid;
 extern t_control ct;
 extern t_wall wall;
 extern t_map map;
+extern t_pos mypos;
 extern t_odom odom;
 
 

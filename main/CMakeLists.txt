@@ -21,5 +21,6 @@ set(COMPONENT_SRCS
     "Log_task.cpp"
     "Set.cpp"
     "Interrupt.cpp"
+    "adachi.cpp"
    )
 register_component()
