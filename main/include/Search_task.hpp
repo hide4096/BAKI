@@ -7,7 +7,7 @@
 #include "Base_task.hpp"
 #include "structs.hpp"
 #include "Interrupt.hpp"
-#include "adachi.hpp"
+//#include "adachi.hpp"
 
 class Search_task : public Base_task{
     public:
@@ -21,6 +21,15 @@ class Search_task : public Base_task{
         virtual int turn_half() override;
         virtual int stop() override;
         void search_1();
+        void init_map(int x, int y);
+        void make_map(int x, int y, int mask);
+        void set_wall(int x, int y);
+        t_bool is_unknown(int x, int y);
+        int get_priority(int x, int y, t_direction dir);
+        int get_nextdir(int x, int y, int mask, t_direction *dir);
+        void search_adachi(int gx, int gy);
+        void InitMaze();
+        
     
     protected:
         float local_rad;

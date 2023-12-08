@@ -1,6 +1,7 @@
 #include "structs.hpp"
-#include "Search_task.hpp"
+//#include "Base_task.hpp"
+//#include "Search_task.hpp"
 
-void search_adachi(int gx, int gy);
+//void search_adachi(int gx, int gy, Search_task* search_task);
 void InitMaze();
-void make_search_task(void *pvparam);
+

@@ -6,7 +6,7 @@
 #define MASK_SECOND 0x03
 #define CONV_SEN2WALL(w) ((w) ? WALL : NOWALL)
 
-Search_task search_task;
+//Search_task search_task;
 
 void init_map(int x, int y)
 {
@@ -316,31 +316,32 @@ int get_nextdir(int x, int y, int mask, t_direction *dir)
 												// 演算の意味はmytyedef.h内のenum宣言から。
 }
 
-void search_adachi(int gx, int gy)
+/*void search_adachi(int gx, int gy, Search_task* search_task)
 {
+
 	// 引数gx,gyに向かって足立法で迷路を探索する
 	t_direction glob_nextdir; // 次に向かう方向を記録する変数
 
 	switch (get_nextdir(gx, gy, MASK_SEARCH, &glob_nextdir)) // 次に行く方向を戻り値とする関数を呼ぶ
 	{
 	case FRONT:
-		//search_task.run_half();
-		printf("run_half\n");
+		search_task->run_half();
+		//printf("run_half\n");
 		break;
 
 	case RIGHT:
-		//search_task.turn_right();
-		printf("turn_right\n");
+		search_task->turn_right();
+		//printf("turn_right\n");
 		break;
 
 	case LEFT:
-		//search_task.turn_left();
-		printf("turn_left\n");
+		search_task->turn_left();
+		//printf("turn_left\n");
 		break;
 
 	case REAR:
-		//search_task.turn_half();
-		printf("turn_half\n");
+		search_task->turn_half();
+		//printf("turn_half\n");
 		break;
 	}
 
@@ -375,29 +376,29 @@ void search_adachi(int gx, int gy)
 		switch (get_nextdir(gx, gy, MASK_SEARCH, &glob_nextdir)) // 次に行く方向を戻り値とする関数を呼ぶ
 		{
 		case FRONT:
-			//search_task.run();
-			printf("run\n");
+			search_task->run();
+			//printf("run\n");
 			break;
 
 		case RIGHT:
-			/*search_task.stop();
-			search_task.turn_right();
-			search_task.run_half();*/
-			printf("turn_right\n");
+			search_task->stop();
+			search_task->turn_right();
+			search_task->run_half();
+			//printf("turn_right\n");
 			break;
 
 		case LEFT:
-			/*search_task.stop();
-			search_task.turn_left();
-			search_task.run_half();*/
-			printf("turn_left\n");
+			search_task->stop();
+			search_task->turn_left();
+			search_task->run_half();
+			//printf("turn_left\n");
 			break;
 
 		case REAR:
-			/*search_task.stop();
-			search_task.turn_half();
-			search_task.run_half();*/
-			printf("turn_half\n");
+			search_task->stop();
+			search_task->turn_half();
+			search_task->run_half();
+			//printf("turn_half\n");
 			break;
 		}
 
@@ -426,8 +427,11 @@ void search_adachi(int gx, int gy)
 	}
 	set_wall(mypos.x, mypos.y); // 壁をセット
 
-	search_task.stop();
-}
+	search_task->stop();
+	//("stop\n");
+	search_task->turn_half();
+	//printf("turn_half\n");
+}*/
 
 void InitMaze(){
 	for(int x=0;x<MAZESIZE_X;x++){
@@ -441,11 +445,3 @@ void InitMaze(){
 	}
 }
 
-void make_search_task(void *pvparam){
-    while (1)
-    {
-        search_adachi(0, 0);
-        //vtaskDelay(1);
-    }
-    
-}
