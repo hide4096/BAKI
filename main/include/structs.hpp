@@ -11,9 +11,9 @@ typedef enum
 typedef enum
 {
     FRONT = 0,
-    LEFT = 1,
-    RIGHT = 2,
-    REAR = 3,
+    RIGHT = 1,
+    REAR = 2,
+    LEFT = 3,
     UNDEFINED,
 }t_local_dir;
 

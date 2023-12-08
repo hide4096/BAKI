@@ -11,6 +11,8 @@ int Search_task::main_task_1() {
     mypos.y = 0;
     mypos.dir = NORTH;
 
+    vTaskDelay(1000);
+
     search_1();
     std::cout << "main_task_1 : Search" << std::endl;
     return 0;

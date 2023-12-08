@@ -324,19 +324,23 @@ void search_adachi(int gx, int gy)
 	switch (get_nextdir(gx, gy, MASK_SEARCH, &glob_nextdir)) // 次に行く方向を戻り値とする関数を呼ぶ
 	{
 	case FRONT:
-		search_task.run_half();
+		//search_task.run_half();
+		printf("run_half\n");
 		break;
 
 	case RIGHT:
-		search_task.turn_right();
+		//search_task.turn_right();
+		printf("turn_right\n");
 		break;
 
 	case LEFT:
-		search_task.turn_left();
+		//search_task.turn_left();
+		printf("turn_left\n");
 		break;
 
 	case REAR:
-		search_task.turn_half();
+		//search_task.turn_half();
+		printf("turn_half\n");
 		break;
 	}
 
@@ -361,6 +365,7 @@ void search_adachi(int gx, int gy)
 		mypos.x--; // 西を向いたときはX座標を減らす
 		break;
 	}
+	printf("mypos.x = %d, mypos.y = %d\n", mypos.x, mypos.y);
 
 	while ((mypos.x != gx) || (mypos.y != gy))
 	{ // ゴールするまで繰り返す
@@ -370,27 +375,29 @@ void search_adachi(int gx, int gy)
 		switch (get_nextdir(gx, gy, MASK_SEARCH, &glob_nextdir)) // 次に行く方向を戻り値とする関数を呼ぶ
 		{
 		case FRONT:
-			search_task.run();
-
+			//search_task.run();
+			printf("run\n");
 			break;
 
 		case RIGHT:
-			search_task.stop();
+			/*search_task.stop();
 			search_task.turn_right();
-			search_task.run_half();
+			search_task.run_half();*/
+			printf("turn_right\n");
 			break;
 
 		case LEFT:
-			search_task.stop();
+			/*search_task.stop();
 			search_task.turn_left();
-			search_task.run_half();
-
+			search_task.run_half();*/
+			printf("turn_left\n");
 			break;
 
 		case REAR:
-			search_task.stop();
+			/*search_task.stop();
 			search_task.turn_half();
-			search_task.run_half();
+			search_task.run_half();*/
+			printf("turn_half\n");
 			break;
 		}
 
@@ -415,6 +422,7 @@ void search_adachi(int gx, int gy)
 			mypos.x--; // 西を向いたときはX座標を減らす
 			break;
 		}
+		printf("mypos.x = %d, mypos.y = %d\n", mypos.x, mypos.y);
 	}
 	set_wall(mypos.x, mypos.y); // 壁をセット
 

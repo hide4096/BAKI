@@ -40,15 +40,16 @@ extern "C" void app_main(void){
     
     CreateTasks();
     //sincurve();
-    set_mode();
+    
     //led.blink();
     //get_main_task_1(2);
     
-    /*while (1){
+    while (1){
         
+        set_mode();
         //printf(">time:%d   \n",ct.time_count);
         //printf(">Yaw:%.3f\n",imu.gyroZ());
-        printf("timer : %d         >motion.rad:%.3f\n",ct.time_count, motion.rad);
+        //printf("timer : %d         >motion.rad:%.3f\n",ct.time_count, motion.rad);
         //printf(">ct.Duty.l:%.3f    >ct.Duty.r:%.3f\n",ct.Duty_l, ct.Duty_r);
         //printf(">motionsens:%.3f\n",imu.gyro_sensitivity);
         //printf(">radian:%.3f\n",motion.rad);
@@ -57,6 +58,6 @@ extern "C" void app_main(void){
         //calc_ang();
         
         vTaskDelay(100/portTICK_PERIOD_MS);
-    }*/
+    }
     
 }
