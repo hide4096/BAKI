@@ -20,14 +20,14 @@ void Log_task::log_print() {
         return;
     }
 
-    uint32_t mem_addr = partition->address;
+    uint32_t mem_offset = 0;
     int16_t data[5];
 
     while(1) {
-        esp_partition_read(partition, mem_addr, data, sizeof(data));
+        esp_partition_read(partition, mem_offset, data, sizeof(data));
         printf("%4d,%4d,%4d,%4d,%4d\r\n", data[0], data[1], data[2], data[3], data[4]);
-        mem_addr += sizeof(data);
-        if (mem_addr >= partition->address + partition->size) {
+        mem_offset += sizeof(data);
+        if (mem_offset >= partition->size) {
             break;
         }
     }

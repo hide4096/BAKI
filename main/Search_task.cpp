@@ -740,30 +740,26 @@ void Search_task::logging(void* pvparam){
         ESP_LOGE("logging", "erase error");
         vTaskDelete(NULL);
     }
-    uint32_t mem_addr = partition->address;
+    uint32_t mem_offset = 0;
     int16_t adcs[5];
 
     ESP_LOGE("logging", "start logging");
 
     while(1){
-        /*
         adcs[0] = w_sens.val.fl;
         adcs[1] = w_sens.val.l;
         adcs[2] = w_sens.val.r;
         adcs[3] = w_sens.val.fr;
         adcs[4] = (uint16_t)(ct.Vatt*1000);
-        */
-        adcs[0] = 1919;
-        adcs[1] = 810;
-        err = esp_partition_write(partition, mem_addr, adcs, sizeof(adcs));
+        err = esp_partition_write(partition, mem_offset, adcs, sizeof(adcs));
         if(err != ESP_OK){
             ESP_LOGE("logging", "write error");
             printf("%s\n", esp_err_to_name(err));
             
             break;
         }
-        mem_addr += sizeof(adcs);
-        if(mem_addr >= partition->size) break;
+        mem_offset += sizeof(adcs);
+        if(mem_offset >= partition->size) break;
 
         if(xSemaphoreTake(task->log_stop, 10) == pdTRUE){
             break;

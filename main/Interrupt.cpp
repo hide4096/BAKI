@@ -265,8 +265,8 @@ void calc_dist()
 
     // std::cout << "motion.len : " << motion.len * 1000.0 << std::endl;
 
-    m_dir.l.vel = len_L / 0.001; // 1ms
-    m_dir.r.vel = len_R / 0.001;
+    m_dir.l.vel = len_L / 1000.; // 1ms
+    m_dir.r.vel = len_R / 1000.;
 
     // std::cout << "m_dir.l.vel : " << m_dir.l.vel * 1000.0 << std::endl;
     // std::cout << "m_dir.r.vel : " << m_dir.r.vel *1 000.0 << std::endl;
