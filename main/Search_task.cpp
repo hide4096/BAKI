@@ -53,11 +53,12 @@ int Search_task::run() {
 
     m_val.max.vel = set_v->max.vel; // 目標（最大）速度設定
     motion.acc = set_m->acc; // 加速度設定
+    float end_vel = m_val.tar.vel;
 
     reset_I_gain(); // 積分値リセット
     motion.len = 0.0;
   
-    while (((set_v->tar.len - 0.01) - motion.len) > 1000.0 * (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
+    while (((set_v->tar.len - 0.03) - motion.len) > (((m_val.tar.vel)*(m_val.tar.vel) - (end_vel)*(end_vel)) / (2.0 * 
     set_m->acc)))
     {
         vTaskDelay(1);
@@ -68,16 +69,16 @@ int Search_task::run() {
 
     while (set_v->tar.len > motion.len)
     {
-        if (m_val.tar.vel <= set_v->min.vel)
+        if (m_val.tar.vel <= end_vel)
         {
             motion.acc = 0;
-            m_val.tar.vel = set_v->min.vel;
+            m_val.tar.vel = end_vel;
         }
         vTaskDelay(1);
         
     }
     
-    m_val.tar.vel = 0.0;
+    //m_val.tar.vel = 0.0;
     motion.acc = 0.0;
 
     ct.control_flag = FALSE;
@@ -94,24 +95,25 @@ int Search_task::run_half() {
     m_val.max.vel = set_v->max.vel; // 目標（最大）速度設定
     motion.acc = set_m->acc; // 加速度設定
 
+    float end_vel = m_val.tar.vel;
+
     reset_I_gain(); // 積分値リセット
     motion.len = 0.0;
   
-    while ((((set_v->tar.len / 2) - 0.01) - motion.len) > 1000.0 * (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
-    set_m->acc)))
+    while ((((set_v->tar.len / 2.) - 0.03) - motion.len) > (((m_val.tar.vel)*(m_val.tar.vel) - (end_vel)*(end_vel)) / (2.0 * set_m->acc)))
     {
         vTaskDelay(1);
     }
 
     //std::cout << "##### deceleration #####" << std::endl;
-    motion.acc = -(set_m->acc);
+    //motion.acc = -(set_m->acc);
 
     while ((set_v->tar.len / 2) > motion.len)
     {
-        if (m_val.tar.vel <= set_v->min.vel)
+        if (m_val.tar.vel <= end_vel)
         {
             motion.acc = 0;
-            m_val.tar.vel = set_v->min.vel;
+            m_val.tar.vel = end_vel;
         }
         vTaskDelay(1);
         
@@ -237,7 +239,7 @@ int Search_task::stop() {
     reset_I_gain(); // 積分値リセット
     motion.len = 0.0;
   
-    while ((((set_v->tar.len / 2) - 0.01) - motion.len) > 1000.0 * (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
+    while ((((set_v->tar.len / 2) - 0.01) - motion.len) > (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
     set_m->acc)))
     {
         vTaskDelay(1);
@@ -442,7 +444,7 @@ void Search_task::set_wall(int x, int y) // 壁情報を記録
 	{
 		map.wall[x - 1][y].east = w_write; // 反対側から見た壁を書き込み
 	}
-    //xSemaphoreGive(on_logging);
+    xSemaphoreGive(on_logging);
     led.set(w_sens.is_wall.FL + (w_sens.is_wall.L << 1) + (w_sens.is_wall.R << 2) + (w_sens.is_wall.FR << 3));
 }
 
@@ -747,16 +749,10 @@ void Search_task::logging(void* pvparam){
         adcs[2] = w_sens.val.r;
         adcs[3] = w_sens.val.fr;
         adcs[4] = (uint16_t)(ct.Vatt*1000);
-        /*
         adcs[5] = w_sens.is_wall.FL;
         adcs[6] = w_sens.is_wall.L;
         adcs[7] = w_sens.is_wall.R;
         adcs[8] = w_sens.is_wall.FR;
-        */
-        adcs[5] = w_sens.th_wall.fl;
-        adcs[6] = w_sens.th_wall.l;
-        adcs[7] = w_sens.th_wall.r;
-        adcs[8] = w_sens.th_wall.fr;
         adcs[9] = (uint16_t)(motion.len*1000);
         err = esp_partition_write(partition, mem_offset, adcs, sizeof(adcs));
         if(err != ESP_OK){

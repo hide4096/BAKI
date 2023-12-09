@@ -31,7 +31,7 @@ void set_param(Base_task *task){
 
     val->tar.vel = 0.3; // 目標速度
     val->max.vel = 0.3; // 最大速度
-    val->min.vel = 0.05; // 最小速度
+    val->min.vel = 0.1; // 最小速度
     val->end.vel = 0.0; // 終了速度
     val->tar.len = 0.09; // 目標距離
 
@@ -43,7 +43,7 @@ void set_param(Base_task *task){
 
     // 速度制御ゲイン
     ctl->v.Kp = ct.v.Kp = 3.0;   // 1.0 1.5 2.0
-    ctl->v.Ki = ct.v.Ki = 300.0; // 300 400.0 300.0
+    ctl->v.Ki = ct.v.Ki = 400.0; // 300 400.0 300.0
     ctl->v.Kd = ct.v.Kd = 0.0;
 
     // 角速度制御ゲイン

@@ -44,6 +44,7 @@ void init_structs()
     memset(&odom, 0, sizeof(odom));
     mot.tire_diameter = 0.0132;
     mot.tire_radius = 0.0066;
+    motion.alpha = 0.6;
 
     on_logging = xSemaphoreCreateBinary();
 
@@ -192,7 +193,7 @@ void wall_ctl() //  壁制御
 
         ct.P.wall_error = motion.wall_error;
     }
-    xSemaphoreGive(on_logging);
+    //xSemaphoreGive(on_logging);
 
     // std::cout << "wall_ctl" << std::endl;
     return;
@@ -277,7 +278,10 @@ void calc_dist()
     // std::cout << "m_dir.l.vel : " << m_dir.l.vel * 1000.0 << std::endl;
     // std::cout << "m_dir.r.vel : " << m_dir.r.vel *1 000.0 << std::endl;
 
-    motion.vel = (m_dir.l.vel + m_dir.r.vel) / 2.0;
+    float _accel = (imu.accelY() * 9.80665) * 0.001;
+    float _vel = (m_dir.l.vel + m_dir.r.vel) / 2.0;
+    //motion.vel = _vel;
+    motion.vel = alpha * (motion.vel + _accel) + (1.0 - alpha) * _vel;
 
     // std::cout << "motion.vel : " << motion.vel << std::endl;
 
