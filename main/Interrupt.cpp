@@ -268,7 +268,7 @@ void calc_dist()
     float len_L = enc.diff_pulse.l * MMPP;
     float len_R = enc.diff_pulse.r * MMPP;
 
-    motion.len += (len_L + len_R) / 2.0;
+    //motion.len += (len_L + len_R) / 2.0;
 
     // std::cout << "motion.len : " << motion.len * 1000.0 << std::endl;
 
@@ -281,7 +281,8 @@ void calc_dist()
     float _accel = (imu.accelY() * 9.80665) * 0.001;
     float _vel = (m_dir.l.vel + m_dir.r.vel) / 2.0;
     //motion.vel = _vel;
-    motion.vel = alpha * (motion.vel + _accel) + (1.0 - alpha) * _vel;
+    motion.vel = motion.alpha * (motion.vel + _accel) + (1.0 - motion.alpha) * _vel;
+    motion.len+=motion.vel*0.001;
 
     // std::cout << "motion.vel : " << motion.vel << std::endl;
 

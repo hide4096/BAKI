@@ -42,8 +42,8 @@ void set_param(Base_task *task){
     val->max.ang_vel = 0.0; // 最大角速度
 
     // 速度制御ゲイン
-    ctl->v.Kp = ct.v.Kp = 3.0;   // 1.0 1.5 2.0
-    ctl->v.Ki = ct.v.Ki = 400.0; // 300 400.0 300.0
+    ctl->v.Kp = ct.v.Kp = 6.0;   // 1.0 1.5 2.0
+    ctl->v.Ki = ct.v.Ki = 600.0; // 300 400.0 300.0
     ctl->v.Kd = ct.v.Kd = 0.0;
 
     // 角速度制御ゲイン
