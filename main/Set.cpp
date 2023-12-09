@@ -58,10 +58,10 @@ void set_param(Base_task *task){
 
 
     // 壁センサ閾値
-    sens->th_wall.fl = 42;
-    sens->th_wall.fr = 47;
-    sens->th_wall.l = 20;
-    sens->th_wall.r = 20;
+    sens->th_wall.fl = w_sens.th_wall.fl = 42;
+    sens->th_wall.fr = w_sens.th_wall.fr = 47;
+    sens->th_wall.l = w_sens.th_wall.l = 20;
+    sens->th_wall.r = w_sens.th_wall.r =20;
     sens->th_control.l = 104;
     sens->th_control.r = 117;
 

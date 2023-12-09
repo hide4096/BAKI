@@ -375,9 +375,6 @@ void Search_task::make_map(int x, int y, int mask) // 歩数マップを作成�
 
 void Search_task::set_wall(int x, int y) // 壁情報を記録
 {
-
-
-
 	// 引数の座標x,yに壁情報を書き込む
 	int n_write = 0, s_write = 0, e_write = 0, w_write = 0;
 
@@ -445,7 +442,7 @@ void Search_task::set_wall(int x, int y) // 壁情報を記録
 	{
 		map.wall[x - 1][y].east = w_write; // 反対側から見た壁を書き込み
 	}
-    xSemaphoreGive(on_logging);
+    //xSemaphoreGive(on_logging);
     led.set(w_sens.is_wall.FL + (w_sens.is_wall.L << 1) + (w_sens.is_wall.R << 2) + (w_sens.is_wall.FR << 3));
 }
 
@@ -750,10 +747,16 @@ void Search_task::logging(void* pvparam){
         adcs[2] = w_sens.val.r;
         adcs[3] = w_sens.val.fr;
         adcs[4] = (uint16_t)(ct.Vatt*1000);
+        /*
         adcs[5] = w_sens.is_wall.FL;
         adcs[6] = w_sens.is_wall.L;
         adcs[7] = w_sens.is_wall.R;
         adcs[8] = w_sens.is_wall.FR;
+        */
+        adcs[5] = w_sens.th_wall.fl;
+        adcs[6] = w_sens.th_wall.l;
+        adcs[7] = w_sens.th_wall.r;
+        adcs[8] = w_sens.th_wall.fr;
         adcs[9] = (uint16_t)(motion.len*1000);
         err = esp_partition_write(partition, mem_offset, adcs, sizeof(adcs));
         if(err != ESP_OK){

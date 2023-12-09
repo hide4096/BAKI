@@ -132,6 +132,15 @@ void wall_ctl() //  壁制御
     {
         w_sens.is_wall.L = FALSE;
     }
+    // 右壁センサ
+    if (w_sens.val.r > w_sens.th_wall.r)
+    {
+        w_sens.is_wall.R = TRUE;
+    }
+    else
+    {
+        w_sens.is_wall.R = FALSE;
+    }
 
     if (w_sens.val.l > w_sens.th_control.l)
     {
@@ -143,16 +152,7 @@ void wall_ctl() //  壁制御
         w_sens.error.l = 0;
         w_sens.is_control.L = FALSE;
     }
-
-    // 右壁センサ
-    if (w_sens.val.r > w_sens.th_wall.r)
-    {
-        w_sens.is_wall.R = TRUE;
-    }
-    else
-    {
-        w_sens.is_wall.R = FALSE;
-    }
+    
     if (w_sens.val.r > w_sens.th_control.r)
     {
         w_sens.error.r = w_sens.val.r - w_sens.ref.r;
@@ -192,6 +192,7 @@ void wall_ctl() //  壁制御
 
         ct.P.wall_error = motion.wall_error;
     }
+    xSemaphoreGive(on_logging);
 
     // std::cout << "wall_ctl" << std::endl;
     return;
