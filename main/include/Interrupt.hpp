@@ -14,6 +14,7 @@
 #include "Log_task.hpp"
 #include "Back_task.hpp"
 #include "peripheral.hpp"
+#include <freertos/semphr.h>
 
 
 
@@ -26,7 +27,6 @@ void calc_dist();   //  距離を計算
 void calc_ang();    //  角度を計
 void reset_I_gain();    //  積分値をリセット
 
-
-
+extern SemaphoreHandle_t on_logging;
 
 #endif

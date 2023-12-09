@@ -22,6 +22,8 @@ t_map map;
 t_pos mypos;
 t_odom odom;
 
+SemaphoreHandle_t on_logging;
+
 #define MMPP mot.tire_diameter *M_PI / ENC_MAX
 
 void init_structs()
@@ -42,6 +44,9 @@ void init_structs()
     memset(&odom, 0, sizeof(odom));
     mot.tire_diameter = 0.01343;
     mot.tire_radius = 0.0066;
+
+    on_logging = xSemaphoreCreateBinary();
+
     return;
 }
 
@@ -98,7 +103,7 @@ void calc_target()
 }
 void wall_ctl() //  壁制御
 {
-    // 右前壁センサ
+    // 左前壁センサ
     if (w_sens.val.fl > w_sens.th_wall.fl)
     {
         w_sens.is_wall.FL = TRUE;
@@ -108,7 +113,7 @@ void wall_ctl() //  壁制御
         w_sens.is_wall.FL = FALSE;
     }
 
-    // 左前壁センサ
+    // 右前壁センサ
     if (w_sens.val.fr > w_sens.th_wall.fr)
     {
         w_sens.is_wall.FR = TRUE;
@@ -127,6 +132,15 @@ void wall_ctl() //  壁制御
     {
         w_sens.is_wall.L = FALSE;
     }
+    // 右壁センサ
+    if (w_sens.val.r > w_sens.th_wall.r)
+    {
+        w_sens.is_wall.R = TRUE;
+    }
+    else
+    {
+        w_sens.is_wall.R = FALSE;
+    }
 
     if (w_sens.val.l > w_sens.th_control.l)
     {
@@ -138,16 +152,7 @@ void wall_ctl() //  壁制御
         w_sens.error.l = 0;
         w_sens.is_control.L = FALSE;
     }
-
-    // 右壁センサ
-    if (w_sens.val.r > w_sens.th_wall.r)
-    {
-        w_sens.is_wall.R = TRUE;
-    }
-    else
-    {
-        w_sens.is_wall.R = FALSE;
-    }
+    
     if (w_sens.val.r > w_sens.th_control.r)
     {
         w_sens.error.r = w_sens.val.r - w_sens.ref.r;
@@ -187,6 +192,7 @@ void wall_ctl() //  壁制御
 
         ct.P.wall_error = motion.wall_error;
     }
+    xSemaphoreGive(on_logging);
 
     // std::cout << "wall_ctl" << std::endl;
     return;
@@ -285,8 +291,13 @@ void calc_dist()
 
 void calc_ang()
 { //  角度を計算する
+    float _yaw = 0.0;
+    if(!imu.in_survaeybias){
+        _yaw = imu.gyroZ() - gyro.gyro_ref;
+    }
 
-    motion.ang_vel = (imu.gyroZ() - gyro.gyro_ref) * (M_PI / 180.0);
+    motion.ang_vel = _yaw * (M_PI / 180.0);
+
     motion.rad += motion.ang_vel / 1000.0;
 
     ct.P.ang_vel = motion.ang_vel;
