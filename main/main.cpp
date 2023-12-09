@@ -57,7 +57,7 @@ extern "C" void app_main(void){
         //printf(">encL:%d\n",encL.readAngle());
         //calc_ang();
         
-        vTaskDelay(1000/portTICK_PERIOD_MS);
+        vTaskDelay(100/portTICK_PERIOD_MS);
     }
     
 }

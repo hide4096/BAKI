@@ -33,7 +33,7 @@ void set_param(Base_task *task){
     val->max.vel = 0.3; // 最大速度
     val->min.vel = 0.1; // 最小速度
     val->end.vel = 0.0; // 終了速度
-    val->tar.len = 0.18; // 目標距離
+    val->tar.len = 0.09; // 目標距離
 
     val->tar.ang_vel = M_PI; // 目標角速度
     val->min.ang_vel = M_PI /50; // 最小角速度
@@ -47,12 +47,12 @@ void set_param(Base_task *task){
     ctl->v.Kd = ct.v.Kd = 0.0;
 
     // 角速度制御ゲイン
-    ctl->o.Kp = ct.o.Kp = 0.20; // 0.20
+    ctl->o.Kp = ct.o.Kp = 0.50; // 0.20
     ctl->o.Ki = ct.o.Ki = 80.0; // 80.0
     ctl->o.Kd = ct.o.Kd = 0.0;
 
     // 壁制御ゲイン
-    ctl->wall.Kp = ct.wall.Kp = 0;
+    ctl->wall.Kp = ct.wall.Kp = 0.01;
     ctl->wall.Ki = ct.wall.Ki = 0;
     ctl->wall.Kd = ct.wall.Kd = 0;
 
@@ -61,9 +61,9 @@ void set_param(Base_task *task){
     sens->th_wall.fl = w_sens.th_wall.fl = 42;
     sens->th_wall.fr = w_sens.th_wall.fr = 47;
     sens->th_wall.l = w_sens.th_wall.l = 20;
-    sens->th_wall.r = w_sens.th_wall.r =20;
-    sens->th_control.l = 104;
-    sens->th_control.r = 117;
+    sens->th_wall.r = w_sens.th_wall.r = 20;
+    sens->th_control.l = w_sens.ref.l = 104;
+    sens->th_control.r = w_sens.ref.r = 117;
 
     //ctl->Vatt = ct.Vatt = 8.4;
 

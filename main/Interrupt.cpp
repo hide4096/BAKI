@@ -25,6 +25,7 @@ t_odom odom;
 SemaphoreHandle_t on_logging;
 
 #define MMPP mot.tire_diameter *M_PI / ENC_MAX
+float _accel = 0.0;
 
 void init_structs()
 {
@@ -272,16 +273,19 @@ void calc_dist()
 
     // std::cout << "motion.len : " << motion.len * 1000.0 << std::endl;
 
-    m_dir.l.vel = len_L * 0.001; // 1ms
-    m_dir.r.vel = len_R * 0.001;
+    m_dir.l.vel = len_L / 0.001; // 1ms
+    m_dir.r.vel = len_R / 0.001;
 
     // std::cout << "m_dir.l.vel : " << m_dir.l.vel * 1000.0 << std::endl;
     // std::cout << "m_dir.r.vel : " << m_dir.r.vel *1 000.0 << std::endl;
 
-    float _accel = (imu.accelY() * 9.80665) * 0.001;
+    if(!imu.in_survaeybias){ // サーベイバイアス中は加速度を計算しない
+        _accel = (imu.accelY() * 9.80665) * 0.001;
+    }
+    
     float _vel = (m_dir.l.vel + m_dir.r.vel) / 2.0;
     //motion.vel = _vel;
-    motion.vel = alpha * (motion.vel + _accel) + (1.0 - alpha) * _vel;
+    motion.vel = motion.alpha * (motion.vel + _accel) + (1.0 - motion.alpha) * _vel;
 
     // std::cout << "motion.vel : " << motion.vel << std::endl;
 
@@ -296,7 +300,7 @@ void calc_dist()
 void calc_ang()
 { //  角度を計算する
     float _yaw = 0.0;
-    if(!imu.in_survaeybias){
+    if(!imu.in_survaeybias){ // サーベイバイアス中は角速度を計算しない
         _yaw = imu.gyroZ() - gyro.gyro_ref;
     }
 
@@ -311,6 +315,9 @@ void calc_ang()
     // std::cout << "motion.rad : " << motion.rad << std::endl;
 
     // std::cout << "calc_ang" << std::endl;
+    //printf("yaw : %f\n", _yaw);
+    //printf("gyro_ref : %f\n", gyro.gyro_ref);
+    //printf("imu.in_survaeybias : %d\n", imu.in_survaeybias);
     return;
 }
 

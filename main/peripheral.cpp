@@ -70,7 +70,7 @@ void initPeripherals()
     initSensors();
     initMotors();
     initADC();
-    gyro.gyro_ref = imu.surveybias(1000);
+    //gyro.gyro_ref = imu.surveybias(1000);
 }
 
 
@@ -84,6 +84,7 @@ void set_mode()
         led.set(mode+1);
         if(w_sens.val.fl + w_sens.val.l + w_sens.val.r + w_sens.val.fr > 3000){
             led.set(0b1111);
+            gyro.gyro_ref = imu.surveybias(1000);
             get_main_task_1(mode);
             ct.control_flag = FALSE;
             break;
@@ -124,6 +125,7 @@ void set_mode()
         //printf(">FL : %4d,  >L : %4d,  >R : %4d,  >FR : %4d\n",w_sens.val.fl, w_sens.val.l, w_sens.val.r, w_sens.val.fr);
         //printf("motion.ang_vel : %f\n", motion.ang_vel);
         //printf("time : %d", ct.time_count);
+        //printf("gyro_ref : %f\n", gyro.gyro_ref);
         vTaskDelay(pdMS_TO_TICKS(10));
     }
 }

@@ -4,7 +4,7 @@ Turn_task::Turn_task() : Base_task() {}
 
 int Turn_task::main_task_1() {
     //turn_check();
-    gyro.gyro_ref = imu.surveybias(1000);
+    //gyro.gyro_ref = imu.surveybias(1000);
     motion.rad = 0.0;
     //turn_left();
     //turn_right();

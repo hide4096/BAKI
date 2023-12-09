@@ -55,11 +55,11 @@ void WallSensor(void* pvparam){
         ReadSensor(before,0b1111);  // 全消灯での値を取得 
         
         SetIRLED(0b1001);   // fl,fr点灯
-        ets_delay_us(150);   // 100us待つ
+        ets_delay_us(300);   // 100us待つ
         ReadSensor(sensors,0b1001); // fl,fr点灯での値を取得
         
         SetIRLED(0b0110);   // l,r点灯
-        ets_delay_us(150);   // 100us待つ
+        ets_delay_us(300);   // 100us待つ
         ReadSensor(sensors,0b0110); // l,r点灯での値を取得
         SetIRLED(0b0000);   // 全消灯
         vTaskDelay(1/portTICK_PERIOD_MS);   // 1ms待つ

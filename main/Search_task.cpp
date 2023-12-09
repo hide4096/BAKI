@@ -10,7 +10,7 @@
 Search_task::Search_task() : Base_task() {}
 
 int Search_task::main_task_1() {
-    gyro.gyro_ref = imu.surveybias(1000);
+    //gyro.gyro_ref = imu.surveybias(1000);
     motion.rad = 0.0;
     mypos.x = 0;
     mypos.y = 0;
@@ -53,7 +53,7 @@ int Search_task::run() {
 
     m_val.max.vel = set_v->max.vel; // 目標（最大）速度設定
     motion.acc = set_m->acc; // 加速度設定
-    float end_vel = m_val.tar.vel;
+    float end_vel = set_v->end.vel;
 
     reset_I_gain(); // 積分値リセット
     motion.len = 0.0;
@@ -67,21 +67,21 @@ int Search_task::run() {
     //std::cout << "##### deceleration #####" << std::endl;
     motion.acc = -(set_m->acc);
 
-    while (set_v->tar.len > motion.len)
+    while ((set_v->tar.len) > motion.len)
     {
-        if (m_val.tar.vel <= end_vel)
+        if (m_val.tar.vel <= set_v->max.vel)
         {
             motion.acc = 0;
-            m_val.tar.vel = end_vel;
+            m_val.tar.vel = set_v->max.vel;
         }
         vTaskDelay(1);
         
     }
     
-    //m_val.tar.vel = 0.0;
+    m_val.tar.vel = set_v->tar.vel;
     motion.acc = 0.0;
 
-    ct.control_flag = FALSE;
+    //ct.control_flag = FALSE;
     
     std::cout << "run" << std::endl;
     return 0;
@@ -273,7 +273,7 @@ void Search_task::search_1() {
     motion.rad = 0.0;
 
     InitMaze();
-    search_adachi(2,2);
+    search_adachi(3,3);
 
     std::cout << "search" << std::endl;
     return;
