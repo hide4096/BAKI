@@ -16,9 +16,16 @@ int Search_task::main_task_1() {
     mypos.y = 0;
     mypos.dir = NORTH;
 
-    vTaskDelay(1000);
+    if (log_stop == NULL) {
+        log_stop = xSemaphoreCreateBinary();
+    }
+
+    xTaskCreatePinnedToCore(logging, "logging", 8192, this, configMAX_PRIORITIES - 3, NULL, APP_CPU_NUM);
+
+    vTaskDelay(pdMS_TO_TICKS(1000));
 
     search_1();
+    xSemaphoreGive(log_stop);
     std::cout << "main_task_1 : Search" << std::endl;
     return 0;
 }
@@ -718,3 +725,50 @@ void Search_task::InitMaze(){
 	}
 }
 
+void Search_task::logging(void* pvparam){
+    Search_task* task = (Search_task*)pvparam;
+    esp_err_t err;
+
+    const esp_partition_t *partition = esp_partition_find_first(ESP_PARTITION_TYPE_DATA, ESP_PARTITION_SUBTYPE_ANY, "logs");
+    if(partition == NULL){
+        ESP_LOGE("logging", "partition not found");
+        vTaskDelete(NULL);
+    }
+
+    err = esp_partition_erase_range(partition, 0, partition->size);
+    if(err != ESP_OK){
+        ESP_LOGE("logging", "erase error");
+        vTaskDelete(NULL);
+    }
+    uint32_t mem_addr = partition->address;
+    int16_t adcs[5];
+
+    ESP_LOGE("logging", "start logging");
+
+    while(1){
+        /*
+        adcs[0] = w_sens.val.fl;
+        adcs[1] = w_sens.val.l;
+        adcs[2] = w_sens.val.r;
+        adcs[3] = w_sens.val.fr;
+        adcs[4] = (uint16_t)(ct.Vatt*1000);
+        */
+        adcs[0] = 1919;
+        adcs[1] = 810;
+        err = esp_partition_write(partition, mem_addr, adcs, sizeof(adcs));
+        if(err != ESP_OK){
+            ESP_LOGE("logging", "write error");
+            printf("%s\n", esp_err_to_name(err));
+            
+            break;
+        }
+        mem_addr += sizeof(adcs);
+        if(mem_addr >= partition->size) break;
+
+        if(xSemaphoreTake(task->log_stop, 10) == pdTRUE){
+            break;
+        }
+        vTaskDelay(pdMS_TO_TICKS(10));
+    }
+    vTaskDelete(NULL);
+}

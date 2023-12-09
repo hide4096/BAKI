@@ -51,25 +51,16 @@ void WallSensor(void* pvparam){
     int before[4];
     int sensors[4];
     while(1){
-        //SetIRLED(0b0000);   // 全消灯
-        //vTaskDelay(10/portTICK_PERIOD_MS);   // 1ms待つ
-        //ets_delay_us(10);   // 10us待つ
+        ct.Vatt = BatteryVoltage(); // 他のタスクやループ内で呼ぼうとするとADCが上手く読めないのでここで呼ぶ
         ReadSensor(before,0b1111);  // 全消灯での値を取得 
         
-        SetIRLED(0b1001);   // fl,r点灯
-        //vTaskDelay(1);    // 1ms待つ
-        ets_delay_us(100);   // 10us待つ
-        ReadSensor(sensors,0b1001); // fl,r点灯での値を取得
-        //SetIRLED(0b0000);   // 全消灯
-
-        //vTaskDelay(1);   // 1ms待つ
-        //ets_delay_us(30);   // 10us待つ
-        //ReadSensor(before,0b0101);  // 全消灯での値を取得
+        SetIRLED(0b1001);   // fl,fr点灯
+        ets_delay_us(150);   // 100us待つ
+        ReadSensor(sensors,0b1001); // fl,fr点灯での値を取得
         
-        SetIRLED(0b0110);   // l,fr点灯
-        //vTaskDelay(1);  // 1ms待つ
-        ets_delay_us(100);   // 10us待つ
-        ReadSensor(sensors,0b0110); // l,fr点灯での値を取得
+        SetIRLED(0b0110);   // l,r点灯
+        ets_delay_us(150);   // 100us待つ
+        ReadSensor(sensors,0b0110); // l,r点灯での値を取得
         SetIRLED(0b0000);   // 全消灯
         vTaskDelay(1/portTICK_PERIOD_MS);   // 1ms待つ
         
@@ -78,10 +69,5 @@ void WallSensor(void* pvparam){
         w_sens.val.l = sensors[1] - before[1];
         w_sens.val.r = sensors[2] - before[2];
         w_sens.val.fr = sensors[3] - before[3];
-        ct.Vatt = BatteryVoltage(); // 他のタスクやループ内で呼ぼうとするとADCが上手く読めないのでここで呼ぶ
-
-        //printf(">ct.Vatt:%f\n",ct.Vatt);
-        //printf(">FL : %d,  >L : %d,  >R : %d,  >FR : %d\n",w_sens.val.fl, w_sens.val.l, w_sens.val.r, w_sens.val.fr);
-        //vTaskDelay(10/portTICK_PERIOD_MS);   // 10ms待つ
     }
 }

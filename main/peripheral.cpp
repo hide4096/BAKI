@@ -73,15 +73,17 @@ void initPeripherals()
     gyro.gyro_ref = imu.surveybias(1000);
 }
 
+
+const int MODE_MAX = 0b0111;
+const int MODE_MIN = 0;
 void set_mode()
 {
-    uint8_t mode_led = 0b1;
-    led.set(mode_led);
     int mode = 0;
     while (1)
     {
+        led.set(mode+1);
         if(w_sens.val.fl + w_sens.val.l + w_sens.val.r + w_sens.val.fr > 3000){
-            
+            led.set(0b1111);
             get_main_task_1(mode);
             ct.control_flag = FALSE;
             break;
@@ -90,31 +92,26 @@ void set_mode()
 
         if (motion.vel > 0.05)
         {
-            if (mode_led >= 0b1111)
+            if (mode >= MODE_MAX)
             {
-                mode_led = 0b1;
-                mode = 0;
+                mode = MODE_MIN;
             }
             else
             {
-                mode_led++;
                 mode++;
             }
         }
         if (motion.vel < -0.05)
         {
-            if (mode_led <= 0b1)
+            if (mode <= MODE_MIN)
             {
-                mode_led = 0b1111;
-                mode = 15;
+                mode = MODE_MAX;
             }
             else
             {
-                mode_led--;
                 mode--;
             }
         }
-        led.set(mode_led);
 
         /*std::cout << "motion.vel : " << motion.vel << std::endl;
         printf("mode_led : %d\n", mode_led);
@@ -122,9 +119,9 @@ void set_mode()
         std::cout << "motion.rad : " << motion.rad << std::endl;*/
         //std::cout << "time : " << ct.time_count << std::endl;
         //printf("time : %d   BatteryVoltage : %f\n", ct.time_count, BatteryVoltage());
-        //printf(">FL : %d,  >L : %d,  >R : %d,  >FR : %d\n",w_sens.val.fl, w_sens.val.l, w_sens.val.r, w_sens.val.fr);
+        //printf(">FL : %4d,  >L : %4d,  >R : %4d,  >FR : %4d\n",w_sens.val.fl, w_sens.val.l, w_sens.val.r, w_sens.val.fr);
         //printf("motion.ang_vel : %f\n", motion.ang_vel);
-        printf("time : %d", ct.time_count);
-        vTaskDelay(100 / portTICK_PERIOD_MS);
+        //printf("time : %d", ct.time_count);
+        vTaskDelay(pdMS_TO_TICKS(100));
     }
 }

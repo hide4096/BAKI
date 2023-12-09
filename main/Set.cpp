@@ -42,7 +42,7 @@ void set_param(Base_task *task){
     val->max.ang_vel = 0.0; // 最大角速度
 
     // 速度制御ゲイン
-    ctl->v.Kp = ct.v.Kp = 2.0;   // 1.0 1.5 2.0
+    ctl->v.Kp = ct.v.Kp = 3.0;   // 1.0 1.5 2.0
     ctl->v.Ki = ct.v.Ki = 300.0; // 300 400.0 300.0
     ctl->v.Kd = ct.v.Kd = 0.0;
 
@@ -60,8 +60,8 @@ void set_param(Base_task *task){
     // 壁センサ閾値
     sens->th_wall.fl = 42;
     sens->th_wall.fr = 47;
-    sens->th_wall.l = 25;
-    sens->th_wall.r = 31;
+    sens->th_wall.l = 20;
+    sens->th_wall.r = 20;
     sens->th_control.l = 104;
     sens->th_control.r = 117;
 
@@ -88,6 +88,6 @@ void get_main_task_1(uint8_t _mode_num){
     std::cout << "get_main_task_1" << std::endl;
     set_param(setmode[_mode_num].get());    //  パラメータを設定    main_task関数より先に呼ぶ
     call_main_task_1(setmode[_mode_num].get());    //  ポインタの配列の中から、引数で指定した番号のポインタを呼び出す
-    std::cout << "Task Ficnish" << std::endl;
+    std::cout << "Task Finish" << std::endl;
     return;
 }

@@ -7,6 +7,13 @@
 #include "Base_task.hpp"
 #include "structs.hpp"
 #include "Interrupt.hpp"
+#include "esp_flash.h"
+#include "esp_flash_spi_init.h"
+#include "esp_partition.h"
+#include "esp_log.h"
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <freertos/semphr.h>
 //#include "adachi.hpp"
 
 class Search_task : public Base_task{
@@ -29,10 +36,12 @@ class Search_task : public Base_task{
         int get_nextdir(int x, int y, int mask, t_direction *dir);
         void search_adachi(int gx, int gy);
         void InitMaze();
-        
+        static void logging(void*);
     
     protected:
         float local_rad;
+        SemaphoreHandle_t log_stop = NULL;
+        
 };
 
 #endif
