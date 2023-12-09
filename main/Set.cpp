@@ -31,7 +31,7 @@ void set_param(Base_task *task){
 
     val->tar.vel = 0.3; // 目標速度
     val->max.vel = 0.3; // 最大速度
-    val->min.vel = 0.05; // 最小速度
+    val->min.vel = 0.1; // 最小速度
     val->end.vel = 0.0; // 終了速度
     val->tar.len = 0.18; // 目標距離
 

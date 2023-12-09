@@ -92,6 +92,7 @@ typedef struct
     float len;   //length
     float wall_val;
     float wall_error;   //wall error
+    float alpha;    //相補フィルタ用
     t_local_dir flag;
 }t_motion;  //motion parameter
 
