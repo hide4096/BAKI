@@ -16,16 +16,11 @@ int Search_task::main_task_1() {
     mypos.y = 0;
     mypos.dir = NORTH;
 
-    if (log_stop == NULL) {
-        log_stop = xSemaphoreCreateBinary();
-    }
-
     xTaskCreatePinnedToCore(logging, "logging", 8192, this, configMAX_PRIORITIES - 3, NULL, APP_CPU_NUM);
 
     vTaskDelay(pdMS_TO_TICKS(1000));
 
     search_1();
-    xSemaphoreGive(log_stop);
     std::cout << "main_task_1 : Search" << std::endl;
     return 0;
 }
@@ -380,11 +375,13 @@ void Search_task::make_map(int x, int y, int mask) // 歩数マップを作成�
 
 void Search_task::set_wall(int x, int y) // 壁情報を記録
 {
+
+
+
 	// 引数の座標x,yに壁情報を書き込む
 	int n_write = 0, s_write = 0, e_write = 0, w_write = 0;
 
 	// 自分の方向に応じて書き込むデータを生成
-	// CONV_SEN2WALL()はmacro.hを参照
 	switch (mypos.dir)
 	{
 	case NORTH: // 北を向いている時
@@ -448,7 +445,7 @@ void Search_task::set_wall(int x, int y) // 壁情報を記録
 	{
 		map.wall[x - 1][y].east = w_write; // 反対側から見た壁を書き込み
 	}
-
+    xSemaphoreGive(on_logging);
     led.set(w_sens.is_wall.FL + (w_sens.is_wall.L << 1) + (w_sens.is_wall.R << 2) + (w_sens.is_wall.FR << 3));
 }
 
@@ -646,7 +643,7 @@ void Search_task::search_adachi(int gx, int gy)
 		mypos.x--; // 西を向いたときはX座標を減らす
 		break;
 	}
-	printf("mypos.x = %d, mypos.y = %d\n", mypos.x, mypos.y);
+	//printf("mypos.x = %d, mypos.y = %d\n", mypos.x, mypos.y);
 
 	while ((mypos.x != gx) || (mypos.y != gy))
 	{ // ゴールするまで繰り返す
@@ -723,6 +720,7 @@ void Search_task::InitMaze(){
 			if(y == MAZESIZE_Y-1)	map.wall[x][y].north = WALL;
 		}
 	}
+    map.wall[0][0].east = map.wall[1][0].west = WALL;
 }
 
 void Search_task::logging(void* pvparam){
@@ -741,16 +739,22 @@ void Search_task::logging(void* pvparam){
         vTaskDelete(NULL);
     }
     uint32_t mem_offset = 0;
-    int16_t adcs[5];
+    int16_t adcs[10];
 
     ESP_LOGE("logging", "start logging");
 
     while(1){
+        xSemaphoreTake(on_logging, portMAX_DELAY);
         adcs[0] = w_sens.val.fl;
         adcs[1] = w_sens.val.l;
         adcs[2] = w_sens.val.r;
         adcs[3] = w_sens.val.fr;
         adcs[4] = (uint16_t)(ct.Vatt*1000);
+        adcs[5] = w_sens.is_wall.FL;
+        adcs[6] = w_sens.is_wall.L;
+        adcs[7] = w_sens.is_wall.R;
+        adcs[8] = w_sens.is_wall.FR;
+        adcs[9] = (uint16_t)(motion.len*1000);
         err = esp_partition_write(partition, mem_offset, adcs, sizeof(adcs));
         if(err != ESP_OK){
             ESP_LOGE("logging", "write error");
@@ -760,11 +764,6 @@ void Search_task::logging(void* pvparam){
         }
         mem_offset += sizeof(adcs);
         if(mem_offset >= partition->size) break;
-
-        if(xSemaphoreTake(task->log_stop, 10) == pdTRUE){
-            break;
-        }
-        vTaskDelay(pdMS_TO_TICKS(10));
     }
     vTaskDelete(NULL);
 }

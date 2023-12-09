@@ -21,11 +21,15 @@ void Log_task::log_print() {
     }
 
     uint32_t mem_offset = 0;
-    int16_t data[5];
+    int16_t data[10];
 
     while(1) {
         esp_partition_read(partition, mem_offset, data, sizeof(data));
-        printf("%4d,%4d,%4d,%4d,%4d\r\n", data[0], data[1], data[2], data[3], data[4]);
+        if(data[4] == -1){
+            break;
+        }
+        printf("%4d,%4d,%4d,%4d,%4d,", data[0], data[1], data[2], data[3], data[4]);
+        printf("%1d,%1d,%1d,%1d\n", data[5], data[6], data[7], data[8]);
         mem_offset += sizeof(data);
         if (mem_offset >= partition->size) {
             break;

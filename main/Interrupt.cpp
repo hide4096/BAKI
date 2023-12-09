@@ -22,6 +22,8 @@ t_map map;
 t_pos mypos;
 t_odom odom;
 
+SemaphoreHandle_t on_logging;
+
 #define MMPP mot.tire_diameter *M_PI / ENC_MAX
 
 void init_structs()
@@ -42,6 +44,9 @@ void init_structs()
     memset(&odom, 0, sizeof(odom));
     mot.tire_diameter = 0.0132;
     mot.tire_radius = 0.0066;
+
+    on_logging = xSemaphoreCreateBinary();
+
     return;
 }
 
@@ -98,7 +103,7 @@ void calc_target()
 }
 void wall_ctl() //  壁制御
 {
-    // 右前壁センサ
+    // 左前壁センサ
     if (w_sens.val.fl > w_sens.th_wall.fl)
     {
         w_sens.is_wall.FL = TRUE;
@@ -108,7 +113,7 @@ void wall_ctl() //  壁制御
         w_sens.is_wall.FL = FALSE;
     }
 
-    // 左前壁センサ
+    // 右前壁センサ
     if (w_sens.val.fr > w_sens.th_wall.fr)
     {
         w_sens.is_wall.FR = TRUE;
@@ -265,8 +270,8 @@ void calc_dist()
 
     // std::cout << "motion.len : " << motion.len * 1000.0 << std::endl;
 
-    m_dir.l.vel = len_L / 1000.; // 1ms
-    m_dir.r.vel = len_R / 1000.;
+    m_dir.l.vel = len_L / 0.001; // 1ms
+    m_dir.r.vel = len_R / 0.001;
 
     // std::cout << "m_dir.l.vel : " << m_dir.l.vel * 1000.0 << std::endl;
     // std::cout << "m_dir.r.vel : " << m_dir.r.vel *1 000.0 << std::endl;

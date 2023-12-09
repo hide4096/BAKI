@@ -100,6 +100,7 @@ void set_mode()
             {
                 mode++;
             }
+            vTaskDelay(pdMS_TO_TICKS(100));
         }
         if (motion.vel < -0.05)
         {
@@ -111,6 +112,7 @@ void set_mode()
             {
                 mode--;
             }
+            vTaskDelay(pdMS_TO_TICKS(100));
         }
 
         /*std::cout << "motion.vel : " << motion.vel << std::endl;
@@ -122,6 +124,6 @@ void set_mode()
         //printf(">FL : %4d,  >L : %4d,  >R : %4d,  >FR : %4d\n",w_sens.val.fl, w_sens.val.l, w_sens.val.r, w_sens.val.fr);
         //printf("motion.ang_vel : %f\n", motion.ang_vel);
         //printf("time : %d", ct.time_count);
-        vTaskDelay(pdMS_TO_TICKS(100));
+        vTaskDelay(pdMS_TO_TICKS(10));
     }
 }

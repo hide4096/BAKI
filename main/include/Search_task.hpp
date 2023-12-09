@@ -40,7 +40,6 @@ class Search_task : public Base_task{
     
     protected:
         float local_rad;
-        SemaphoreHandle_t log_stop = NULL;
         
 };
 
