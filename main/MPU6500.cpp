@@ -136,11 +136,13 @@ int MPU6500::changesens(uint8_t _gyro,uint8_t _accel){
 }
 
 float MPU6500::surveybias(int reftime){
+    in_survaeybias = true;
     float r_yaw_ref_tmp = 0;
     for(uint16_t i = 0; i < reftime; i++){
         r_yaw_ref_tmp += gyroZ();
         vTaskDelay(1/portTICK_PERIOD_MS);
     }
+    in_survaeybias = false;
     return (float)(r_yaw_ref_tmp / reftime);
 }
 

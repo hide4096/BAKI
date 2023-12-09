@@ -285,8 +285,13 @@ void calc_dist()
 
 void calc_ang()
 { //  角度を計算する
+    float _yaw = 0.0;
+    if(!imu.in_survaeybias){
+        _yaw = imu.gyroZ() - gyro.gyro_ref;
+    }
 
-    motion.ang_vel = (imu.gyroZ() - gyro.gyro_ref) * (M_PI / 180.0);
+    motion.ang_vel = _yaw * (M_PI / 180.0);
+
     motion.rad += motion.ang_vel / 1000.0;
 
     ct.P.ang_vel = motion.ang_vel;
