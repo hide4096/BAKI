@@ -8,7 +8,8 @@ int Turn_task::main_task_1() {
     motion.rad = 0.0;
     //turn_left();
     //turn_right();
-    turn_half();
+    //turn_half();
+    turn_check();
     std::cout << "main_task_1 : Turn" << std::endl;
     return 0;
 }
@@ -183,12 +184,15 @@ void Turn_task::turn_check() {
     std::cout << "turn_check" << std::endl;
 
     w_sens.enable = FALSE;
+    ct.control_flag = TRUE; // 制御ON
     //motion.flag = LEFT;
 
     //m_val.max.ang_vel = 0.0;
     //motion.ang_acc = 0.0;
 
     //m_val.tar.rad = 0.0;
+    motion.rad = 0.0;
+    motion.len = 0.0;
 
     while (1)
     {

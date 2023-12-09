@@ -40,7 +40,7 @@ void init_structs()
     memset(&map, 0, sizeof(map));
     memset(&mypos, 0, sizeof(mypos));
     memset(&odom, 0, sizeof(odom));
-    mot.tire_diameter = 0.0132;
+    mot.tire_diameter = 0.01343;
     mot.tire_radius = 0.0066;
     return;
 }
@@ -265,8 +265,8 @@ void calc_dist()
 
     // std::cout << "motion.len : " << motion.len * 1000.0 << std::endl;
 
-    m_dir.l.vel = len_L / 0.001; // 1ms
-    m_dir.r.vel = len_R / 0.001;
+    m_dir.l.vel = len_L * 0.001; // 1ms
+    m_dir.r.vel = len_R * 0.001;
 
     // std::cout << "m_dir.l.vel : " << m_dir.l.vel * 1000.0 << std::endl;
     // std::cout << "m_dir.r.vel : " << m_dir.r.vel *1 000.0 << std::endl;

@@ -122,9 +122,9 @@ void set_mode()
         std::cout << "motion.rad : " << motion.rad << std::endl;*/
         //std::cout << "time : " << ct.time_count << std::endl;
         //printf("time : %d   BatteryVoltage : %f\n", ct.time_count, BatteryVoltage());
-        //printf(">FL : %d,  >L : %d,  >R : %d,  >FR : %d\n",w_sens.val.fl, w_sens.val.l, w_sens.val.r, w_sens.val.fr);
+        printf(">FL : %d,  >L : %d,  >R : %d,  >FR : %d\n",w_sens.val.fl, w_sens.val.l, w_sens.val.r, w_sens.val.fr);
         //printf("motion.ang_vel : %f\n", motion.ang_vel);
-        printf("time : %d", ct.time_count);
+        //printf("time : %d", ct.time_count);
         vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }

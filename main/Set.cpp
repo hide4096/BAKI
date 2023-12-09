@@ -33,7 +33,7 @@ void set_param(Base_task *task){
     val->max.vel = 0.3; // 最大速度
     val->min.vel = 0.05; // 最小速度
     val->end.vel = 0.0; // 終了速度
-    val->tar.len = 0.09; // 目標距離
+    val->tar.len = 0.18; // 目標距離
 
     val->tar.ang_vel = M_PI; // 目標角速度
     val->min.ang_vel = M_PI /50; // 最小角速度
@@ -42,8 +42,8 @@ void set_param(Base_task *task){
     val->max.ang_vel = 0.0; // 最大角速度
 
     // 速度制御ゲイン
-    ctl->v.Kp = ct.v.Kp = 2.0;   // 1.0 1.5 2.0
-    ctl->v.Ki = ct.v.Ki = 300.0; // 300 400.0 300.0
+    ctl->v.Kp = ct.v.Kp = 11.0;   // 1.0 1.5 2.0
+    ctl->v.Ki = ct.v.Ki = 800.0; // 300 400.0 300.0
     ctl->v.Kd = ct.v.Kd = 0.0;
 
     // 角速度制御ゲイン
@@ -65,7 +65,7 @@ void set_param(Base_task *task){
     sens->th_control.l = 104;
     sens->th_control.r = 117;
 
-    ctl->Vatt = ct.Vatt = 8.4;
+    //ctl->Vatt = ct.Vatt = 8.4;
 
     
     task->cp_param(param);

@@ -22,6 +22,8 @@ int Run_task::run() {
     motion.acc = set_m->acc; // 加速度設定
 
     reset_I_gain(); // 積分値リセット
+
+    motion.len = 0.0; // 走行距離リセット
   
     while (((set_v->tar.len - 0.01) - motion.len) > 1000.0 * (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
     set_m->acc)))
