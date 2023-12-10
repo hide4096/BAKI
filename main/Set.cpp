@@ -26,12 +26,12 @@ void set_param(Base_task *task){
     std::shared_ptr<t_wall_sens> sens = std::make_shared<t_wall_sens>();
 
     // モーションパラメータ
-    param->acc = 1.0; // 加速度
+    param->acc = 0.5; // 加速度
     param->ang_acc = M_PI*4; // 角加速度
 
-    val->tar.vel = 0.3; // 目標速度
-    val->max.vel = 0.3; // 最大速度
-    val->min.vel = 0.1; // 最小速度
+    val->tar.vel = 0.25; // 目標速度
+    val->max.vel = 0.25; // 最大速度
+    val->min.vel = 0.05; // 最小速度
     val->end.vel = 0.0; // 終了速度
     val->tar.len = 0.09; // 目標距離
 
@@ -42,28 +42,30 @@ void set_param(Base_task *task){
     val->max.ang_vel = 0.0; // 最大角速度
 
     // 速度制御ゲイン
-    ctl->v.Kp = ct.v.Kp = 11.0;   // 1.0 1.5 2.0
+    ctl->v.Kp = ct.v.Kp = 10.0;   // 1.0 1.5 2.0
     ctl->v.Ki = ct.v.Ki = 800.0; // 300 400.0 300.0
     ctl->v.Kd = ct.v.Kd = 0.0;
 
     // 角速度制御ゲイン
-    ctl->o.Kp = ct.o.Kp = 0.50; // 0.20
+    ctl->o.Kp = ct.o.Kp = 0.2; // 0.20
     ctl->o.Ki = ct.o.Ki = 80.0; // 80.0
     ctl->o.Kd = ct.o.Kd = 0.0;
 
     // 壁制御ゲイン
-    ctl->wall.Kp = ct.wall.Kp = 0.01;
+    ctl->wall.Kp = ct.wall.Kp = 0.008;
     ctl->wall.Ki = ct.wall.Ki = 0;
     ctl->wall.Kd = ct.wall.Kd = 0;
 
 
     // 壁センサ閾値
-    sens->th_wall.fl = w_sens.th_wall.fl = 42;
-    sens->th_wall.fr = w_sens.th_wall.fr = 47;
-    sens->th_wall.l = w_sens.th_wall.l = 20;
-    sens->th_wall.r = w_sens.th_wall.r = 20;
-    sens->th_control.l = w_sens.ref.l = 104;
-    sens->th_control.r = w_sens.ref.r = 117;
+    sens->th_wall.fl = w_sens.th_wall.fl = 42; // 左前壁の閾値
+    sens->th_wall.fr = w_sens.th_wall.fr = 47; // 右前壁の閾値
+    sens->th_wall.l = w_sens.th_wall.l = 41; // 左壁の閾値、制御閾値
+    sens->th_wall.r = w_sens.th_wall.r = 55; // 右壁の閾値、制御閾値
+    w_sens.th_control.l = 100;
+    w_sens.th_control.r = 100;
+    sens->th_control.l = w_sens.ref.l = 141; // マス中央での左壁の閾値
+    sens->th_control.r = w_sens.ref.r = 170; // マス中央での右壁の閾値
 
     //ctl->Vatt = ct.Vatt = 8.4;
 

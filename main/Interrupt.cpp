@@ -43,7 +43,7 @@ void init_structs()
     memset(&map, 0, sizeof(map));
     memset(&mypos, 0, sizeof(mypos));
     memset(&odom, 0, sizeof(odom));
-    mot.tire_diameter = 0.01343;
+    mot.tire_diameter = 0.01368;
     mot.tire_radius = 0.0066;
     motion.alpha = 0.6;
 
@@ -269,7 +269,7 @@ void calc_dist()
     float len_L = enc.diff_pulse.l * MMPP;
     float len_R = enc.diff_pulse.r * MMPP;
 
-    motion.len += (len_L + len_R) / 2.0;
+    //motion.len += (len_L + len_R) / 2.0;
 
     // std::cout << "motion.len : " << motion.len * 1000.0 << std::endl;
 
@@ -286,7 +286,7 @@ void calc_dist()
     float _vel = (m_dir.l.vel + m_dir.r.vel) / 2.0;
     //motion.vel = _vel;
     motion.vel = motion.alpha * (motion.vel + _accel) + (1.0 - motion.alpha) * _vel;
-
+    motion.len += motion.vel*0.001;
     // std::cout << "motion.vel : " << motion.vel << std::endl;
 
     m_val.I.vel += motion.vel; // 積分値更新

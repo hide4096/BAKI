@@ -57,8 +57,17 @@ int Search_task::run() {
 
     reset_I_gain(); // 積分値リセット
     motion.len = 0.0;
-  
-    while (((set_v->tar.len - 0.03) - motion.len) > (((m_val.tar.vel)*(m_val.tar.vel) - (end_vel)*(end_vel)) / (2.0 * 
+
+	if (len_count == 7)
+	{
+		//set_v->tar.len = 45;
+		m_val.tar.len = 0.045;
+	}else{
+		m_val.tar.len = set_v->tar.len;
+	}
+	
+	
+    while (((m_val.tar.len - 0.03) - motion.len) > (((m_val.tar.vel)*(m_val.tar.vel) - (end_vel)*(end_vel)) / (2.0 * 
     set_m->acc)))
     {
         vTaskDelay(1);
@@ -67,7 +76,7 @@ int Search_task::run() {
     //std::cout << "##### deceleration #####" << std::endl;
     motion.acc = -(set_m->acc);
 
-    while ((set_v->tar.len) > motion.len)
+    while ((m_val.tar.len) > motion.len)
     {
         if (m_val.tar.vel <= set_v->max.vel)
         {
@@ -129,6 +138,8 @@ int Search_task::run_half() {
 }
 
 int Search_task::turn_left() {    // 左旋回が正
+
+	vTaskDelay(100);
     
     ct.control_flag = TRUE; // 制御ON
     w_sens.enable = FALSE; // 壁制御OFF
@@ -163,6 +174,8 @@ int Search_task::turn_left() {    // 左旋回が正
 }
 
 int Search_task::turn_right() {
+
+	vTaskDelay(100);
     
     ct.control_flag = TRUE; // 制御ON
     w_sens.enable = FALSE; // 壁制御OFF
@@ -196,6 +209,8 @@ int Search_task::turn_right() {
 }
 
 int Search_task::turn_half() {
+
+	vTaskDelay(100);
     
     ct.control_flag = TRUE; // 制御ON
     w_sens.enable = FALSE; // 壁制御OFF
@@ -239,9 +254,12 @@ int Search_task::stop() {
     reset_I_gain(); // 積分値リセット
     motion.len = 0.0;
   
-    while ((((set_v->tar.len / 2) - 0.01) - motion.len) > (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
+    while ((((set_v->tar.len / 2) - 0.05) - motion.len) > (((m_val.tar.vel)*(m_val.tar.vel) - (set_v->end.vel)*(set_v->end.vel)) / (2.0 * 
     set_m->acc)))
     {
+		if(w_sens.val.fl > 750 && w_sens.val.fr > 750){
+			break;
+		}
         vTaskDelay(1);
     }
 
@@ -254,6 +272,9 @@ int Search_task::stop() {
         {
             motion.acc = 0;
             m_val.tar.vel = set_v->min.vel;
+			if(w_sens.val.fl > 750 && w_sens.val.fr > 750){
+			break;
+		}
         }
         vTaskDelay(1);
         
@@ -273,7 +294,7 @@ void Search_task::search_1() {
     motion.rad = 0.0;
 
     InitMaze();
-    search_adachi(3,3);
+    search_adachi(8,7); //8,7
 
     std::cout << "search" << std::endl;
     return;
@@ -653,6 +674,7 @@ void Search_task::search_adachi(int gx, int gy)
 		{
 		case FRONT:
 			run();
+			len_count++;
 			//printf("run\n");
 			break;
 
@@ -660,6 +682,7 @@ void Search_task::search_adachi(int gx, int gy)
 			stop();
 			turn_right();
 			run_half();
+			len_count = 0;
 			//printf("turn_right\n");
 			break;
 
@@ -667,6 +690,7 @@ void Search_task::search_adachi(int gx, int gy)
 			stop();
 			turn_left();
 			run_half();
+			len_count = 0;
 			//printf("turn_left\n");
 			break;
 
@@ -674,6 +698,7 @@ void Search_task::search_adachi(int gx, int gy)
 			stop();
 			turn_half();
 			run_half();
+			len_count = 0;
 			//printf("turn_half\n");
 			break;
 		}

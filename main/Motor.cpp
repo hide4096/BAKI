@@ -106,8 +106,8 @@ void initMotors(){
 
 void setMotorSpeed(float spdR, float spdL,float fan){
 
-    if(spdR > 0)    gpio_set_level(BDC_R_MCPWM_GPIO_PH, 1); //  右モータ反転させてつけた
-    else            gpio_set_level(BDC_R_MCPWM_GPIO_PH, 0);
+    if(spdR > 0)    gpio_set_level(BDC_R_MCPWM_GPIO_PH, 0); //  右モータ反転させてつけた
+    else            gpio_set_level(BDC_R_MCPWM_GPIO_PH, 1);
     if(spdL > 0)    gpio_set_level(BDC_L_MCPWM_GPIO_PH, 0);
     else            gpio_set_level(BDC_L_MCPWM_GPIO_PH, 1);
 
@@ -139,7 +139,7 @@ void sincurve(){
             printf("%f,\r\n",t);
             
         }
-        setMotorSpeed(spdR*0.5,0,fan);
+        setMotorSpeed(0.4,0.0,fan);
         t += 0.01;
         vTaskDelay(1 / portTICK_PERIOD_MS);
     }

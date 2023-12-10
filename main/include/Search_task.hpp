@@ -27,6 +27,7 @@ class Search_task : public Base_task{
         virtual int turn_right() override;
         virtual int turn_half() override;
         virtual int stop() override;
+        void run_ofset();
         void search_1();
         void init_map(int x, int y);
         void make_map(int x, int y, int mask);
@@ -37,6 +38,7 @@ class Search_task : public Base_task{
         void search_adachi(int gx, int gy);
         void InitMaze();
         static void logging(void*);
+        uint8_t len_count = 0;
     
     protected:
         float local_rad;
