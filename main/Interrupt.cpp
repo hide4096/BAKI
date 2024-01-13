@@ -216,8 +216,8 @@ void FB_ctl()
         m_val.I.ang_error += motion.ang_error / 1000.0;
         ct.P.ang_error = (ct.P.ang_vel - motion.ang_vel) * 1000.0;
 
-        ct.V_l += motion.ang_error * (ct.o.Kp) + m_val.I.ang_error * (ct.o.Ki) - ct.P.ang_error * (ct.o.Kd);
-        ct.V_r -= motion.ang_error * (ct.o.Kp) + m_val.I.ang_error * (ct.o.Ki) - ct.P.ang_error * (ct.o.Kd);
+        ct.V_l -= motion.ang_error * (ct.o.Kp) + m_val.I.ang_error * (ct.o.Ki) - ct.P.ang_error * (ct.o.Kd);
+        ct.V_r += motion.ang_error * (ct.o.Kp) + m_val.I.ang_error * (ct.o.Ki) - ct.P.ang_error * (ct.o.Kd);
 
         /*ct.Duty_l = ct.V_l / ct.Vatt;
         ct.Duty_r = ct.V_r / ct.Vatt;*/

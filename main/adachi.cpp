@@ -6,9 +6,9 @@
 #define MASK_SECOND 0x03
 #define CONV_SEN2WALL(w) ((w) ? WALL : NOWALL)
 
-//Search_task search_task;
 
-void init_map(int x, int y)
+
+void Adachi::init_map(int x, int y)
 {
 	// 迷路の歩数Mapを初期化する。全体を0xff、引数の座標x,yは0で初期化する
 
@@ -25,7 +25,7 @@ void init_map(int x, int y)
 	map.size[x][y] = 0; // ゴール座標の歩数を０に設定
 }
 
-void make_map(int x, int y, int mask) // 歩数マップを作成する
+void Adachi::make_map(int x, int y, int mask) // 歩数マップを作成する
 {
 	// 座標x,yをゴールとした歩数Mapを作成する。
 	// maskの値(MASK_SEARCH or MASK_SECOND)によって、
@@ -100,7 +100,7 @@ void make_map(int x, int y, int mask) // 歩数マップを作成する
 	} while (change_flag == TRUE); // 全体を作り終わるまで待つ
 }
 
-void set_wall(int x, int y) // 壁情報を記録
+void Adachi::set_wall(int x, int y) // 壁情報を記録
 {
 	// 引数の座標x,yに壁情報を書き込む
 	int n_write = 0, s_write = 0, e_write = 0, w_write = 0;
@@ -172,7 +172,7 @@ void set_wall(int x, int y) // 壁情報を記録
 	}
 }
 
-t_bool is_unknown(int x, int y) // 指定された区画が未探索か否かを判断する関数 未探索:TRUE　探索済:false
+t_bool Adachi::is_unknown(int x, int y) // 指定された区画が未探索か否かを判断する関数 未探索:TRUE　探索済:false
 {
 	// 座標x,yが未探索区間か否かを調べる
 
@@ -186,7 +186,7 @@ t_bool is_unknown(int x, int y) // 指定された区画が未探索か否かを
 	}
 }
 
-int get_priority(int x, int y, t_direction dir) // そのマスの情報から、優先度を算出する
+int Adachi::get_priority(int x, int y, t_direction dir) // そのマスの情報から、優先度を算出する
 {
 	// 座標x,yと、向いている方角dirから優先度を算出する
 
@@ -219,7 +219,7 @@ int get_priority(int x, int y, t_direction dir) // そのマスの情報から�
 	return priority; // 優先度を返す
 }
 
-int get_nextdir(int x, int y, int mask, t_direction *dir)
+int Adachi::get_nextdir(int x, int y, int mask, t_direction *dir)
 {
 	// ゴール座標x,yに向かう場合、今どちらに行くべきかを判断する。
 	// 探索、最短の切り替えのためのmaskを指定、dirは方角を示す

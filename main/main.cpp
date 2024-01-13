@@ -37,7 +37,7 @@ extern "C" void app_main(void){
     //xTaskCreatePinnedToCore([](void*){Interrupt();}, "Interrupt", 8192, NULL, 1, NULL, 0);
     
     
-    sincurve();
+    //sincurve();
     CreateTasks();
     //sincurve();
     

@@ -20,7 +20,7 @@ int Search_task::main_task_1() {
 
     vTaskDelay(pdMS_TO_TICKS(1000));
 
-    search_1();
+    search();
     std::cout << "main_task_1 : Search" << std::endl;
     return 0;
 }

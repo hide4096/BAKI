@@ -22,5 +22,6 @@ set(COMPONENT_SRCS
     "Set.cpp"
     "Interrupt.cpp"
     "adachi.cpp"
+    "run.cpp"
    )
 register_component()

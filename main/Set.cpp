@@ -3,6 +3,7 @@
 
 
 std::vector<std::shared_ptr<Base_task>> setmode;    //  ポインタの配列を作成
+std::shared_ptr<runs> runmode = std::make_shared<runs>();
 
 void set_main_task_1(uint8_t _mode){    //  使用可能な処理を登録（LEDで表現できる数の最大数を引数とする）
     
@@ -42,13 +43,13 @@ void set_param(Base_task *task){
     val->max.ang_vel = 0.0; // 最大角速度
 
     // 速度制御ゲイン
-    ctl->v.Kp = ct.v.Kp = 10.0;   // 1.0 1.5 2.0
-    ctl->v.Ki = ct.v.Ki = 800.0; // 300 400.0 300.0
+    ctl->v.Kp = ct.v.Kp = 5.0;   // 25.0 1.0 1.5 2.0
+    ctl->v.Ki = ct.v.Ki = 500.0; // 800.0 300 400.0 300.0
     ctl->v.Kd = ct.v.Kd = 0.0;
 
     // 角速度制御ゲイン
-    ctl->o.Kp = ct.o.Kp = 0.2; // 0.20
-    ctl->o.Ki = ct.o.Ki = 80.0; // 80.0
+    ctl->o.Kp = ct.o.Kp = 0.50; // 0.70 0.20
+    ctl->o.Ki = ct.o.Ki = 100.0; // 90.0 80.0
     ctl->o.Kd = ct.o.Kd = 0.0;
 
     // 壁制御ゲイン
@@ -74,6 +75,11 @@ void set_param(Base_task *task){
     task->cp_tar(val);
     task->cp_pid(ctl);
     task->cp_wall_th(sens);
+
+    runmode->cp_param(param);
+    runmode->cp_tar(val);
+    runmode->cp_pid(ctl);
+    runmode->cp_wall_th(sens);
 
     std::cout << "set_param" << std::endl;
 }

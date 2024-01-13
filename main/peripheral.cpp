@@ -122,10 +122,12 @@ void set_mode()
         std::cout << "motion.rad : " << motion.rad << std::endl;*/
         //std::cout << "time : " << ct.time_count << std::endl;
         //printf("time : %d   BatteryVoltage : %f\n", ct.time_count, BatteryVoltage());
-        printf(">FL : %4d,  >L : %4d,  >R : %4d,  >FR : %4d\n",w_sens.val.fl, w_sens.val.l, w_sens.val.r, w_sens.val.fr);
+        //printf(">FL : %4d,  >L : %4d,  >R : %4d,  >FR : %4d\n",w_sens.val.fl, w_sens.val.l, w_sens.val.r, w_sens.val.fr);
         //printf("motion.ang_vel : %f\n", motion.ang_vel);
         //printf("time : %d", ct.time_count);
         //printf("gyro_ref : %f\n", gyro.gyro_ref);
+        //printf("motion.vel : %f\n", motion.vel);
+        printf("motion.rad : %f\n", motion.rad);
         vTaskDelay(pdMS_TO_TICKS(10));
     }
 }

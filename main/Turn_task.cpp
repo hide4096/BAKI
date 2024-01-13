@@ -185,6 +185,7 @@ void Turn_task::turn_check() {
 
     w_sens.enable = FALSE;
     ct.control_flag = TRUE; // 制御ON
+    reset_I_gain(); // 積分値リセット
     //motion.flag = LEFT;
 
     //m_val.max.ang_vel = 0.0;
